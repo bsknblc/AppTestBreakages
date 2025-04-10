@@ -1,37 +1,28 @@
-package com.WebApps.Benchmark.Model;
+package com.WebApps.Benchmark.DTO;
 
-
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
+import com.WebApps.Benchmark.Model.TestCase;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
-@Table(name = "T_TEST_SUITE")
-public class TestSuite {
+public class TestSuiteDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NotNull
-    @Column(name = "ID")
     private int id;
-
-    @NotNull
-    @Column(name = "NAME")
     private String testSuiteName;
-
-    @OneToMany(mappedBy = "testSuite", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TestCase> testCases = new ArrayList<>();
 
-    public TestSuite(){};
-
-    public TestSuite(String testSuiteName) {
+    public TestSuiteDTO(int id, String testSuiteName, List<TestCase> testCases) {
+        this.id = id;
         this.testSuiteName = testSuiteName;
+        this.testCases = testCases;
     }
 
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getTestSuiteName() {

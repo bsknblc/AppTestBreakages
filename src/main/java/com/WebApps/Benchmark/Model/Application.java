@@ -32,7 +32,7 @@ public class Application {
     @JsonManagedReference
     private List<AppPage> pages = new ArrayList<>();
 
-    public Application() {}
+    public Application(){};
 
     public Application(String appName, String url) {
         this.appName = appName;

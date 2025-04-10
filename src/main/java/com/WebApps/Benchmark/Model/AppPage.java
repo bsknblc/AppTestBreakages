@@ -1,7 +1,6 @@
 package com.WebApps.Benchmark.Model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
@@ -25,12 +24,13 @@ public class AppPage {
     @ManyToOne
     @JoinColumn(name = "application_id", nullable = false)
     @JsonBackReference
+    @NotNull
     private Application application;
 
     @OneToMany(mappedBy = "appPage", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<LineOfCode> lineOfCodes = new ArrayList<>();
 
-    public AppPage() {}
+    public AppPage(){};
 
     public AppPage(String pageName, Application application) {
         this.pageName = pageName;
@@ -39,10 +39,6 @@ public class AppPage {
 
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getPageName() {

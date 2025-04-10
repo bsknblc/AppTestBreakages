@@ -1,13 +1,10 @@
 package com.WebApps.Benchmark.Service;
 
 import com.WebApps.Benchmark.DTO.ApplicationDTO;
-import com.WebApps.Benchmark.Model.AppPage;
-import com.WebApps.Benchmark.Model.AppRelease;
 import com.WebApps.Benchmark.Model.Application;
 import com.WebApps.Benchmark.Repository.ApplicationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.ArrayList;
 import java.util.List;

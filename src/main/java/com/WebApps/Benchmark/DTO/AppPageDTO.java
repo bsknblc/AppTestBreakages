@@ -2,8 +2,6 @@ package com.WebApps.Benchmark.DTO;
 
 import com.WebApps.Benchmark.Model.Application;
 import com.WebApps.Benchmark.Model.LineOfCode;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;

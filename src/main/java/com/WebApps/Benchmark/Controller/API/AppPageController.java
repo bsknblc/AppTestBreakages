@@ -1,11 +1,8 @@
 package com.WebApps.Benchmark.Controller.API;
 
 import com.WebApps.Benchmark.DTO.AppPageDTO;
-import com.WebApps.Benchmark.DTO.ApplicationDTO;
 import com.WebApps.Benchmark.Model.AppPage;
-import com.WebApps.Benchmark.Model.Application;
 import com.WebApps.Benchmark.Service.AppPageService;
-import com.WebApps.Benchmark.Service.ApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

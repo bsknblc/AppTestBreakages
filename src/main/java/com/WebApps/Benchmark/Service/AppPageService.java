@@ -1,10 +1,8 @@
 package com.WebApps.Benchmark.Service;
 
 import com.WebApps.Benchmark.DTO.AppPageDTO;
-import com.WebApps.Benchmark.DTO.ApplicationDTO;
 import com.WebApps.Benchmark.Model.AppPage;
 import com.WebApps.Benchmark.Model.Application;
-import com.WebApps.Benchmark.Model.LineOfCode;
 import com.WebApps.Benchmark.Repository.AppPageRepository;
 import com.WebApps.Benchmark.Repository.ApplicationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,9 +37,7 @@ public class AppPageService {
         Application app = applicationRepository.findById(applicationPage.getApplication().getId())
                 .orElseThrow(() -> new RuntimeException("Application not found"));
 
-        AppPage appPage = new AppPage();
-        appPage.setPageName(applicationPage.getPageName());
-        appPage.setApplication(app);
+        AppPage appPage = new AppPage(applicationPage.getPageName(),app);
 
         return appPageRepository.save(appPage);
     }

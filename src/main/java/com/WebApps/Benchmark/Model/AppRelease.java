@@ -27,20 +27,18 @@ public class AppRelease {
     @ManyToOne
     @JoinColumn(name = "application_id", nullable = false)
     @JsonBackReference
+    @NotNull
     private Application application;
 
-    public AppRelease(){}
+    public AppRelease(){};
 
-    public AppRelease(String releaseName) {
+    public AppRelease(String releaseName, Application application) {
         this.releaseName = releaseName;
+        this.application = application;
     }
 
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getReleaseName() {

@@ -1,7 +1,6 @@
 package com.WebApps.Benchmark.Service;
 
 import com.WebApps.Benchmark.DTO.AppReleaseDTO;
-import com.WebApps.Benchmark.Model.AppPage;
 import com.WebApps.Benchmark.Model.AppRelease;
 import com.WebApps.Benchmark.Model.Application;
 import com.WebApps.Benchmark.Repository.AppReleaseRepository;
@@ -37,11 +36,7 @@ public class AppReleaseService {
     public AppRelease save(AppRelease appRelease) {
         Application app = applicationRepository.findById(appRelease.getApplication().getId())
                 .orElseThrow(() -> new RuntimeException("Application not found"));
-
-        AppRelease release = new AppRelease();
-        release.setReleaseName(appRelease.getReleaseName());
-        appRelease.setApplication(app);
-
+        AppRelease release = new AppRelease(appRelease.getReleaseName(), app);
         return appReleaseRepository.save(appRelease);
     }
 
