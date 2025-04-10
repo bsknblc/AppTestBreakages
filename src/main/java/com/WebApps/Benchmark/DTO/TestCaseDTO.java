@@ -1,50 +1,32 @@
-package com.WebApps.Benchmark.Model;
+package com.WebApps.Benchmark.DTO;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
+import com.WebApps.Benchmark.Model.TestCaseVersion;
+import com.WebApps.Benchmark.Model.TestSuite;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
-@Table(name = "T_TEST_CASE")
-public class TestCase {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NotNull
-    @Column(name = "ID")
+public class TestCaseDTO {
     private int id;
-
-    @NotNull
-    @Column(name = "NAME")
     private String testCaseName;
-
-    @OneToMany(mappedBy = "testCase", cascade = CascadeType.ALL, orphanRemoval = true)
-    //@JsonManagedReference
     private List<TestCaseVersion> testCaseVersions = new ArrayList<>();
-
-    @ManyToOne
-    @JsonBackReference
-    @JoinColumn(name = "test_suite_id", nullable = false)
     private TestSuite testSuite;
-
-    @NotNull
-    @Column(name = "DESCRIPTION")
     private String description;
 
-    public TestCase() {}
-
-    public TestCase(String testCaseName, TestSuite testSuite, String description) {
+    public TestCaseDTO(int id, String testCaseName, List<TestCaseVersion> testCaseVersions, TestSuite testSuite, String description) {
+        this.id = id;
         this.testCaseName = testCaseName;
+        this.testCaseVersions = testCaseVersions;
         this.testSuite = testSuite;
         this.description = description;
     }
 
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getTestCaseName() {

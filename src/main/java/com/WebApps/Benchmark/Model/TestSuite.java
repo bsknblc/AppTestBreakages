@@ -1,6 +1,7 @@
 package com.WebApps.Benchmark.Model;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
@@ -22,9 +23,10 @@ public class TestSuite {
     private String testSuiteName;
 
     @OneToMany(mappedBy = "testSuite", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<TestCase> testCases = new ArrayList<>();
 
-    public TestSuite(){};
+    public TestSuite(){}
 
     public TestSuite(String testSuiteName) {
         this.testSuiteName = testSuiteName;

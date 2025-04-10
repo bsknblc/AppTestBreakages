@@ -30,7 +30,7 @@ public class AppRelease {
     @NotNull
     private Application application;
 
-    public AppRelease(){};
+    public AppRelease(){}
 
     public AppRelease(String releaseName, Application application) {
         this.releaseName = releaseName;

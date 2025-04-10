@@ -30,7 +30,7 @@ public class AppPage {
     @OneToMany(mappedBy = "appPage", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<LineOfCode> lineOfCodes = new ArrayList<>();
 
-    public AppPage(){};
+    public AppPage(){}
 
     public AppPage(String pageName, Application application) {
         this.pageName = pageName;
