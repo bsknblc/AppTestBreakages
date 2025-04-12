@@ -1,36 +1,39 @@
 package com.WebApps.Benchmark.Service;
 
 import com.WebApps.Benchmark.DTO.TestSuiteDTO;
+import com.WebApps.Benchmark.Mapper.TestSuiteMapper;
 import com.WebApps.Benchmark.Model.TestSuite;
 import com.WebApps.Benchmark.Repository.TestSuiteRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class TestSuiteService {
-    @Autowired
-    TestSuiteRepository testSuiteRepository;
+
+    private final TestSuiteRepository testSuiteRepository;
+    public TestSuiteService(TestSuiteRepository testSuiteRepository) {
+        this.testSuiteRepository = testSuiteRepository;
+    }
 
     public List<TestSuiteDTO> findAll(){
         List<TestSuite> testSuites = testSuiteRepository.findAll();
-        List<TestSuiteDTO> testSuiteDTOS = new ArrayList<>();
-        for (TestSuite testSuite: testSuites) {
-            testSuiteDTOS.add(new TestSuiteDTO(testSuite.getId(), testSuite.getTestSuiteName(), testSuite.getTestCases()));
-        }
-        return testSuiteDTOS;
+        return testSuites.stream()
+                .map(TestSuiteMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
     public TestSuiteDTO findById(int id){
         TestSuite testSuite = testSuiteRepository.getReferenceById(id);
-        return new TestSuiteDTO(testSuite.getId(), testSuite.getTestSuiteName(), testSuite.getTestCases());
+        return TestSuiteMapper.toDTO(testSuite);
     }
 
-    public TestSuiteDTO save(TestSuite testSuite) {
-        TestSuite testSuite1 = testSuiteRepository.save(testSuite);
-        return new TestSuiteDTO(testSuite.getId(), testSuite.getTestSuiteName(), testSuite.getTestCases());
+    public TestSuiteDTO save(TestSuiteDTO testSuiteDTO) {
+        TestSuite testSuite = TestSuiteMapper.toEntity(testSuiteDTO);
+        testSuiteRepository.save(TestSuiteMapper.toEntity(testSuiteDTO));
+        testSuiteDTO.setId(testSuite.getId());
+        return testSuiteDTO;
     }
 
 }

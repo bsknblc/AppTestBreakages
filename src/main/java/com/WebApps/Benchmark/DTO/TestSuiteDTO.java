@@ -9,13 +9,14 @@ public class TestSuiteDTO {
 
     private int id;
     private String testSuiteName;
-    private List<TestCase> testCases = new ArrayList<>();
+    private List<TestCaseDTO> testCases = new ArrayList<>();
 
-    public TestSuiteDTO(int id, String testSuiteName, List<TestCase> testCases) {
+    public TestSuiteDTO(int id, String testSuiteName, List<TestCaseDTO> testCases) {
         this.id = id;
         this.testSuiteName = testSuiteName;
         this.testCases = testCases;
     }
+
 
     public int getId() {
         return id;
@@ -33,11 +34,11 @@ public class TestSuiteDTO {
         this.testSuiteName = testSuiteName;
     }
 
-    public List<TestCase> getTestCases() {
+    public List<TestCaseDTO> getTestCases() {
         return testCases;
     }
 
-    public void setTestCases(List<TestCase> testCases) {
+    public void setTestCases(List<TestCaseDTO> testCases) {
         this.testCases = testCases;
     }
 }

@@ -13,8 +13,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/test_cases")
 public class TestCaseController {
-    @Autowired
-    TestCaseService testCaseService;
+
+    private final TestCaseService testCaseService;
+    public TestCaseController(TestCaseService testCaseService) {
+        this.testCaseService = testCaseService;
+    }
 
     @GetMapping
     public ResponseEntity<List<TestCaseDTO>> findAll(){
@@ -23,13 +26,13 @@ public class TestCaseController {
     }
 
     @GetMapping("/{test-case-id}")
-    public ResponseEntity<TestCaseDTO> getApplicationById(@PathVariable("test-case-id") int id) {
+    public ResponseEntity<TestCaseDTO> getTestCaseById(@PathVariable("test-case-id") int id) {
         TestCaseDTO testCaseDTO = testCaseService.findById(id);
         return ResponseEntity.ok(testCaseDTO);
     }
 
     @PostMapping
-    public ResponseEntity<TestCaseDTO> save(@RequestBody TestCase testCase) {
+    public ResponseEntity<TestCaseDTO> save(@RequestBody TestCaseDTO testCase) {
         TestCaseDTO testCaseDTO = testCaseService.save(testCase);
         return ResponseEntity.status(HttpStatus.CREATED).body(testCaseDTO);
     }

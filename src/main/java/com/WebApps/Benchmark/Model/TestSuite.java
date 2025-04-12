@@ -23,7 +23,6 @@ public class TestSuite {
     private String testSuiteName;
 
     @OneToMany(mappedBy = "testSuite", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
     private List<TestCase> testCases = new ArrayList<>();
 
     public TestSuite(){}

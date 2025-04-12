@@ -23,11 +23,10 @@ public class TestCase {
     private String testCaseName;
 
     @OneToMany(mappedBy = "testCase", cascade = CascadeType.ALL, orphanRemoval = true)
-    //@JsonManagedReference
     private List<TestCaseVersion> testCaseVersions = new ArrayList<>();
 
     @ManyToOne
-    @JsonBackReference
+    @NotNull
     @JoinColumn(name = "test_suite_id", nullable = false)
     private TestSuite testSuite;
 

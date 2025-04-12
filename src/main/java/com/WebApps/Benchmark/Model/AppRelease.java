@@ -1,6 +1,7 @@
 package com.WebApps.Benchmark.Model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
@@ -22,6 +23,7 @@ public class AppRelease {
     private String releaseName;
 
     @OneToMany(mappedBy = "appRelease", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Breakage> breakages = new ArrayList<>();
 
     @ManyToOne

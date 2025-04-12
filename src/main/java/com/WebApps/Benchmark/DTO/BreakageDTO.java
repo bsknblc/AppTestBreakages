@@ -1,53 +1,36 @@
-package com.WebApps.Benchmark.Model;
+package com.WebApps.Benchmark.DTO;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.WebApps.Benchmark.Model.AppRelease;
+import com.WebApps.Benchmark.Model.RepairALineOfCode;
+import com.WebApps.Benchmark.Model.TestCaseVersion;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
-@Table(name = "T_BREAKAGE")
-public class Breakage {
+public class BreakageDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NotNull
-    @Column(name = "ID")
     private int id;
-
-    @ManyToOne
-    @JoinColumn(name = "app_release_id", nullable = false)
-    @NotNull
-    @JsonBackReference
     private AppRelease appRelease;
-
-    @ManyToOne
-    @JoinColumn(name = "test_case_version_id", nullable = false)
-    @NotNull
-    @JsonBackReference
     private TestCaseVersion testCaseVersion;
-
-    @OneToMany(mappedBy = "breakage", cascade = CascadeType.ALL, orphanRemoval = true)
-    //JsonManagedReference
     private List<RepairALineOfCode> repairALineOfCodes = new ArrayList<>();
-
-    @NotNull
-    @Column(name = "TAXONOMY_DESCRIPTION")
     private String taxonomyDescription;
 
-    public Breakage(){}
-
-    public Breakage(AppRelease appRelease, TestCaseVersion testCaseVersion, String taxonomyDescription) {
+    public BreakageDTO(int id, AppRelease appRelease, TestCaseVersion testCaseVersion, List<RepairALineOfCode> repairALineOfCodes, String taxonomyDescription) {
+        this.id = id;
         this.appRelease = appRelease;
         this.testCaseVersion = testCaseVersion;
+        this.repairALineOfCodes = repairALineOfCodes;
         this.taxonomyDescription = taxonomyDescription;
     }
 
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public AppRelease getAppRelease() {

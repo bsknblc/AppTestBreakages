@@ -14,8 +14,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/test_suites")
 public class TestSuiteController {
-    @Autowired
-    TestSuiteService testSuiteService;
+
+    private final TestSuiteService testSuiteService;
+    public TestSuiteController(TestSuiteService testSuiteService) {
+        this.testSuiteService = testSuiteService;
+    }
+
 
     @GetMapping
     public ResponseEntity<List<TestSuiteDTO>> findAll(){
@@ -24,13 +28,13 @@ public class TestSuiteController {
     }
 
     @GetMapping("/{test-suite-id}")
-    public ResponseEntity<TestSuiteDTO> getApplicationById(@PathVariable("test-suite-id") int id) {
+    public ResponseEntity<TestSuiteDTO> getTestSuiteById(@PathVariable("test-suite-id") int id) {
         TestSuiteDTO testSuiteDTO = testSuiteService.findById(id);
         return ResponseEntity.ok(testSuiteDTO);
     }
 
     @PostMapping
-    public ResponseEntity<TestSuiteDTO> save(@RequestBody TestSuite testSuite) {
+    public ResponseEntity<TestSuiteDTO> save(@RequestBody TestSuiteDTO testSuite) {
         TestSuiteDTO testSuiteDTO = testSuiteService.save(testSuite);
         return ResponseEntity.status(HttpStatus.CREATED).body(testSuiteDTO);
     }
