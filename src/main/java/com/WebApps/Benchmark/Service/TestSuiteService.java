@@ -31,7 +31,7 @@ public class TestSuiteService {
 
     public TestSuiteDTO save(TestSuiteDTO testSuiteDTO) {
         TestSuite testSuite = TestSuiteMapper.toEntity(testSuiteDTO);
-        testSuiteRepository.save(TestSuiteMapper.toEntity(testSuiteDTO));
+        testSuiteRepository.save(testSuite);
         testSuiteDTO.setId(testSuite.getId());
         return testSuiteDTO;
     }

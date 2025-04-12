@@ -11,10 +11,12 @@ public class ApplicationDTO {
     private int id;
     private String appName;
     private String url;
-    private List<AppRelease> releases = new ArrayList<>();
-    private List<AppPage> pages = new ArrayList<>();
+    private List<AppReleaseDTO> releases = new ArrayList<>();
+    private List<AppPageDTO> pages = new ArrayList<>();
 
-    public ApplicationDTO(int id, String appName, String url, List<AppRelease> releases, List<AppPage> pages) {
+    public ApplicationDTO() {}
+
+    public ApplicationDTO(int id, String appName, String url, List<AppReleaseDTO> releases, List<AppPageDTO> pages) {
         this.id = id;
         this.appName = appName;
         this.url = url;
@@ -34,11 +36,8 @@ public class ApplicationDTO {
         return url;
     }
 
-    public List<AppRelease> getReleases() {
-        return releases;
-    }
 
-    public List<AppPage> getPages() {
+    public List<AppPageDTO> getPages() {
         return pages;
     }
 
@@ -54,11 +53,15 @@ public class ApplicationDTO {
         this.url = url;
     }
 
-    public void setReleases(List<AppRelease> releases) {
+    public List<AppReleaseDTO> getReleases() {
+        return releases;
+    }
+
+    public void setReleases(List<AppReleaseDTO> releases) {
         this.releases = releases;
     }
 
-    public void setPages(List<AppPage> pages) {
+    public void setPages(List<AppPageDTO> pages) {
         this.pages = pages;
     }
 }

@@ -22,15 +22,12 @@ public class AppPageService {
     public List<AppPageDTO> findAll(){
         List<AppPage> appPages = appPageRepository.findAll();
         List<AppPageDTO> appPageDTOs = new ArrayList<>();
-        for (AppPage appPage: appPages) {
-            appPageDTOs.add(new AppPageDTO(appPage.getId(), appPage.getPageName(), appPage.getApplication(), appPage.getLineOfCodes()));
-        }
         return appPageDTOs;
     }
 
     public AppPageDTO findById(int id){
         AppPage appPage = appPageRepository.getReferenceById(id);
-        return new AppPageDTO(appPage.getId(), appPage.getPageName(), appPage.getApplication(), appPage.getLineOfCodes());
+        return new AppPageDTO();
     }
 
     public AppPage save(AppPage applicationPage) {

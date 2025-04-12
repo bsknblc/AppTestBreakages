@@ -23,12 +23,10 @@ public class AppRelease {
     private String releaseName;
 
     @OneToMany(mappedBy = "appRelease", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
     private List<Breakage> breakages = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "application_id", nullable = false)
-    @JsonBackReference
     @NotNull
     private Application application;
 

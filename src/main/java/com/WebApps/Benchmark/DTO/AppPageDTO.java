@@ -10,15 +10,17 @@ public class AppPageDTO {
 
     private int id;
     private String pageName;
-    private Application application;
-    private List<LineOfCode> lineOfCodes = new ArrayList<>();
+    private int applicationId;
+    //private List<LineOfCode> lineOfCodes = new ArrayList<>();
 
-    public AppPageDTO(int id, String pageName, Application application, List<LineOfCode> lineOfCodes) {
+    public AppPageDTO() {}
+
+/*    public AppPageDTO(int id, String pageName, Application application, List<LineOfCode> lineOfCodes) {
         this.id = id;
         this.pageName = pageName;
         this.application = application;
         this.lineOfCodes = lineOfCodes;
-    }
+    }*/
 
     public int getId() {
         return id;
@@ -36,19 +38,19 @@ public class AppPageDTO {
         this.pageName = pageName;
     }
 
-    public Application getApplication() {
-        return application;
+    public int getApplicationId() {
+        return applicationId;
     }
 
-    public void setApplication(Application application) {
-        this.application = application;
+    public void setApplicationId(int applicationId) {
+        this.applicationId = applicationId;
     }
 
-    public List<LineOfCode> getLineOfCodes() {
+/*    public List<LineOfCode> getLineOfCodes() {
         return lineOfCodes;
     }
 
     public void setLineOfCodes(List<LineOfCode> lineOfCodes) {
         this.lineOfCodes = lineOfCodes;
-    }
+    }*/
 }

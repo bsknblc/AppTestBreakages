@@ -10,15 +10,17 @@ public class AppReleaseDTO {
 
     private int id;
     private String releaseName;
-    private List<Breakage> breakages = new ArrayList<>();
-    private Application application;
+    //private List<Breakage> breakages = new ArrayList<>();
+    private int applicationID;
 
-    public AppReleaseDTO(int id, String releaseName, List<Breakage> breakages, Application application) {
+    public AppReleaseDTO() {}
+
+/*    public AppReleaseDTO(int id, String releaseName,*//* List<Breakage> breakages,*//* Application application) {
         this.id = id;
         this.releaseName = releaseName;
-        this.breakages = breakages;
+        //this.breakages = breakages;
         this.application = application;
-    }
+    }*/
 
     public int getId() {
         return id;
@@ -36,19 +38,19 @@ public class AppReleaseDTO {
         this.releaseName = releaseName;
     }
 
-    public List<Breakage> getBreakages() {
+/*    public List<Breakage> getBreakages() {
         return breakages;
     }
 
     public void setBreakages(List<Breakage> breakages) {
         this.breakages = breakages;
+    }*/
+
+    public int getApplicationID() {
+        return applicationID;
     }
 
-    public Application getApplication() {
-        return application;
-    }
-
-    public void setApplication(Application application) {
-        this.application = application;
+    public void setApplicationID(int applicationID) {
+        this.applicationID = applicationID;
     }
 }

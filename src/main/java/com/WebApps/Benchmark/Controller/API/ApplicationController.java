@@ -29,7 +29,7 @@ public class ApplicationController {
     }
 
     @PostMapping
-    public ResponseEntity<ApplicationDTO> save(@RequestBody Application application) {
+    public ResponseEntity<ApplicationDTO> save(@RequestBody ApplicationDTO application) {
         ApplicationDTO applicationDTO = applicationService.save(application);
         return ResponseEntity.status(HttpStatus.CREATED).body(applicationDTO);
     }

@@ -22,22 +22,17 @@ public class AppReleaseService {
     public List<AppReleaseDTO> findAll(){
         List<AppRelease> appReleases = appReleaseRepository.findAll();
         List<AppReleaseDTO> appReleaseDTOs = new ArrayList<>();
-        for (AppRelease appRelease: appReleases) {
-            appReleaseDTOs.add(new AppReleaseDTO(appRelease.getId(), appRelease.getReleaseName(), appRelease.getBreakages(), appRelease.getApplication()));
-        }
+
         return appReleaseDTOs;
     }
 
     public AppReleaseDTO findById(int id){
         AppRelease appRelease = appReleaseRepository.getReferenceById(id);
-        return new AppReleaseDTO(appRelease.getId(), appRelease.getReleaseName(), appRelease.getBreakages(), appRelease.getApplication());
+        return new AppReleaseDTO();
     }
 
     public AppRelease save(AppRelease appRelease) {
-        Application app = applicationRepository.findById(appRelease.getApplication().getId())
-                .orElseThrow(() -> new RuntimeException("Application not found"));
-        AppRelease release = new AppRelease(appRelease.getReleaseName(), app);
-        return appReleaseRepository.save(appRelease);
+        return appRelease;
     }
 
 

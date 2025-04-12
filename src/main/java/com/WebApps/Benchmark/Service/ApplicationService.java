@@ -1,36 +1,43 @@
 package com.WebApps.Benchmark.Service;
 
 import com.WebApps.Benchmark.DTO.ApplicationDTO;
+import com.WebApps.Benchmark.Mapper.ApplicationMapper;
+import com.WebApps.Benchmark.Mapper.TestSuiteMapper;
 import com.WebApps.Benchmark.Model.Application;
+import com.WebApps.Benchmark.Model.TestSuite;
 import com.WebApps.Benchmark.Repository.ApplicationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ApplicationService {
-    @Autowired
-    ApplicationRepository applicationRepository;
+
+    private final ApplicationRepository applicationRepository;
+    public ApplicationService(ApplicationRepository applicationRepository) {
+        this.applicationRepository = applicationRepository;
+    }
 
     public List<ApplicationDTO> findAll(){
         List<Application> apps = applicationRepository.findAll();
-        List<ApplicationDTO> appDTOs = new ArrayList<>();
-        for (Application app: apps) {
-            appDTOs.add(new ApplicationDTO(app.getId(), app.getAppName(), app.getUrl(), app.getReleases(), app.getPages()));
-        }
-        return appDTOs;
+        return apps.stream()
+                .map(ApplicationMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
     public ApplicationDTO findById(int id){
         Application app = applicationRepository.getReferenceById(id);
-        return new ApplicationDTO(app.getId(), app.getAppName(), app.getUrl(), app.getReleases(), app.getPages());
+        return ApplicationMapper.toDTO(app);
     }
 
-    public ApplicationDTO save(Application application) {
-        Application app = applicationRepository.save(application);
-        return new ApplicationDTO(app.getId(), app.getAppName(), app.getUrl(), app.getReleases(), app.getPages());
+    public ApplicationDTO save(ApplicationDTO applicationDTO) {
+        Application application = ApplicationMapper.toEntity(applicationDTO);
+        applicationRepository.save(application);
+        applicationDTO.setId(application.getId());
+        return new ApplicationDTO();
     }
 
 

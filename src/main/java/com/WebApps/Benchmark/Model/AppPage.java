@@ -23,7 +23,6 @@ public class AppPage {
 
     @ManyToOne
     @JoinColumn(name = "application_id", nullable = false)
-    @JsonBackReference
     @NotNull
     private Application application;
 

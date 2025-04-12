@@ -25,11 +25,9 @@ public class Application {
     private String url;
 
     @OneToMany(mappedBy = "application", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
     private List<AppRelease> releases = new ArrayList<>();
 
     @OneToMany(mappedBy = "application", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
     private List<AppPage> pages = new ArrayList<>();
 
     public Application(){}
