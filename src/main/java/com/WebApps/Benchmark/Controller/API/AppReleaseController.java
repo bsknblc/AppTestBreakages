@@ -1,9 +1,7 @@
 package com.WebApps.Benchmark.Controller.API;
 
 import com.WebApps.Benchmark.DTO.AppReleaseDTO;
-import com.WebApps.Benchmark.Model.AppRelease;
 import com.WebApps.Benchmark.Service.AppReleaseService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,27 +12,25 @@ import java.util.List;
 @RequestMapping("/api/app_releases")
 public class AppReleaseController {
 
-    @Autowired
-    AppReleaseService appReleaseService;
+    private final AppReleaseService appReleaseService;
+    public AppReleaseController(AppReleaseService appReleaseService) {
+        this.appReleaseService = appReleaseService;
+    }
 
 
     @GetMapping
     public ResponseEntity<List<AppReleaseDTO>> findAll(){
-        List<AppReleaseDTO> appReleaseDTOS = appReleaseService.findAll();
-        return ResponseEntity.ok(appReleaseDTOS);
+        return ResponseEntity.ok(appReleaseService.findAll());
     }
 
     @GetMapping("/{app-release-id}")
     public ResponseEntity<AppReleaseDTO> getAppReleaseById(@PathVariable("app-release-id") int id) {
-        AppReleaseDTO appReleaseDTO = appReleaseService.findById(id);
-        return ResponseEntity.ok(appReleaseDTO);
+        return ResponseEntity.ok(appReleaseService.findById(id));
     }
 
     @PostMapping
-    public ResponseEntity<AppRelease> save(@RequestBody AppRelease appRelease) {
-        AppRelease release = appReleaseService.save(appRelease);
-        return ResponseEntity.status(HttpStatus.CREATED).body(release);
+    public ResponseEntity<AppReleaseDTO> save(@RequestBody AppReleaseDTO appReleaseDTO) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(appReleaseService.save(appReleaseDTO));
     }
-
 
 }

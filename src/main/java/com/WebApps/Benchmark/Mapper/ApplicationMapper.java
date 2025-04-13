@@ -3,8 +3,6 @@ package com.WebApps.Benchmark.Mapper;
 import com.WebApps.Benchmark.DTO.AppPageDTO;
 import com.WebApps.Benchmark.DTO.AppReleaseDTO;
 import com.WebApps.Benchmark.DTO.ApplicationDTO;
-import com.WebApps.Benchmark.Model.AppPage;
-import com.WebApps.Benchmark.Model.AppRelease;
 import com.WebApps.Benchmark.Model.Application;
 
 import java.util.ArrayList;
@@ -35,38 +33,6 @@ public class ApplicationMapper {
                 appReleaseDTOs,
                 appPageDTOs
         );
-    }
-
-    public static Application toEntity(ApplicationDTO dto) {
-        if (dto == null) return null;
-
-        Application entity = new Application();
-        entity.setAppName(dto.getAppName());
-        entity.setUrl(dto.getUrl());
-
-        if (dto.getPages() != null) {
-            List<AppPage> appPages = dto.getPages().stream()
-                    .map(appPageDTO -> {
-                        AppPage appPage = AppPageMapper.toEntity(appPageDTO, entity);
-                        appPage.setApplication(entity); // Set back-reference
-                        return appPage;
-                    })
-                    .collect(Collectors.toList());
-            entity.setPages(appPages);
-        }
-
-        if (dto.getReleases() != null) {
-            List<AppRelease> appReleases = dto.getReleases().stream()
-                    .map(appReleaseDTO -> {
-                        AppRelease appRelease = AppReleaseMapper.toEntity(appReleaseDTO, entity);
-                        appRelease.setApplication(entity); // Set back-reference
-                        return appRelease;
-                    })
-                    .collect(Collectors.toList());
-            entity.setReleases(appReleases);
-        }
-
-        return entity;
     }
 
 }

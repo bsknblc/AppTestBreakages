@@ -30,24 +30,4 @@ public class TestCaseMapper {
         );
     }
 
-    public static TestCase toEntity(TestCaseDTO dto, TestSuite parentSuite) {
-        if (dto == null) return null;
-
-        TestCase entity = new TestCase();
-        entity.setTestCaseName(dto.getTestCaseName());
-        entity.setDescription(dto.getDescription());
-        entity.setTestSuite(parentSuite);
-
-        if (dto.getTestCaseVersions() != null) {
-            List<TestCaseVersion> versions = dto.getTestCaseVersions().stream()
-                    .map(versionDto -> {
-                        TestCaseVersion version = TestCaseVersionMapper.toEntity(versionDto, entity);
-                        version.setTestCase(entity); // back-reference
-                        return version;
-                    })
-                    .collect(Collectors.toList());
-            entity.setTestCaseVersions(versions);
-        }
-        return entity;
-    }
 }

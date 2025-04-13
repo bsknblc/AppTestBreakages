@@ -1,36 +1,49 @@
 package com.WebApps.Benchmark.Service;
 
 import com.WebApps.Benchmark.DTO.BreakageDTO;
+import com.WebApps.Benchmark.Mapper.BreakageMapper;
 import com.WebApps.Benchmark.Model.Breakage;
+import com.WebApps.Benchmark.Repository.AppReleaseRepository;
 import com.WebApps.Benchmark.Repository.BreakageRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.WebApps.Benchmark.Repository.TestCaseVersionRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class BreakageService {
-    @Autowired
-    BreakageRepository breakageRepository;
+
+    private final BreakageRepository breakageRepository;
+    private final TestCaseVersionRepository testCaseVersionRepository;
+    private final AppReleaseRepository appReleaseRepository;
+    public BreakageService(BreakageRepository breakageRepository, TestCaseVersionRepository testCaseVersionRepository, AppReleaseRepository appReleaseRepository) {
+        this.breakageRepository = breakageRepository;
+        this.testCaseVersionRepository = testCaseVersionRepository;
+        this.appReleaseRepository = appReleaseRepository;
+    }
 
     public List<BreakageDTO> findAll(){
         List<Breakage> breakages = breakageRepository.findAll();
-        List<BreakageDTO> breakageDTOS = new ArrayList<>();
-        for (Breakage breakage: breakages) {
-            breakageDTOS.add(new BreakageDTO(breakage.getId(), breakage.getAppRelease(), breakage.getTestCaseVersion(), breakage.getRepairALineOfCodes(), breakage.getTaxonomyDescription()));
-        }
-        return breakageDTOS;
+        return breakages.stream()
+                .map(BreakageMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
     public BreakageDTO findById(int id){
         Breakage breakage = breakageRepository.getReferenceById(id);
-        return new BreakageDTO(breakage.getId(), breakage.getAppRelease(), breakage.getTestCaseVersion(), breakage.getRepairALineOfCodes(), breakage.getTaxonomyDescription());
+        return BreakageMapper.toDTO(breakage);
     }
 
-    public BreakageDTO save(Breakage breakage1) {
-        Breakage breakage = breakageRepository.save(breakage1);
-        return new BreakageDTO(breakage.getId(), breakage.getAppRelease(), breakage.getTestCaseVersion(), breakage.getRepairALineOfCodes(), breakage.getTaxonomyDescription());
+    public BreakageDTO save(BreakageDTO breakageDTO) {
+        Breakage breakage = new Breakage();
+        breakage.setTaxonomyDescription(breakageDTO.getTaxonomyDescription());
+        breakage.setAppRelease(appReleaseRepository.getReferenceById(breakageDTO.getAppRelease()));
+        breakage.setTestCaseVersion(testCaseVersionRepository.getReferenceById(breakageDTO.getTestCaseVersion()));
+        breakageRepository.save(breakage);
+
+        breakageDTO.setId(breakage.getId());
+        return breakageDTO;
     }
 
 }

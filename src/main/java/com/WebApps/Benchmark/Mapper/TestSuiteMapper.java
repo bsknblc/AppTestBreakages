@@ -2,7 +2,6 @@ package com.WebApps.Benchmark.Mapper;
 
 import com.WebApps.Benchmark.DTO.TestCaseDTO;
 import com.WebApps.Benchmark.DTO.TestSuiteDTO;
-import com.WebApps.Benchmark.Model.TestCase;
 import com.WebApps.Benchmark.Model.TestSuite;
 
 import java.util.ArrayList;
@@ -27,23 +26,4 @@ public class TestSuiteMapper {
         );
     }
 
-    public static TestSuite toEntity(TestSuiteDTO dto) {
-        if (dto == null) return null;
-
-        TestSuite entity = new TestSuite();
-        entity.setTestSuiteName(dto.getTestSuiteName());
-
-        if (dto.getTestCases() != null) {
-            List<TestCase> testCases = dto.getTestCases().stream()
-                    .map(testCaseDto -> {
-                        TestCase testCase = TestCaseMapper.toEntity(testCaseDto, entity);
-                        testCase.setTestSuite(entity); // Set back-reference
-                        return testCase;
-                    })
-                    .collect(Collectors.toList());
-            entity.setTestCases(testCases);
-        }
-
-        return entity;
-    }
 }

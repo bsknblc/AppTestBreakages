@@ -21,17 +21,14 @@ public class Breakage {
     @ManyToOne
     @JoinColumn(name = "app_release_id", nullable = false)
     @NotNull
-    @JsonBackReference
     private AppRelease appRelease;
 
     @ManyToOne
     @JoinColumn(name = "test_case_version_id", nullable = false)
     @NotNull
-    @JsonBackReference
     private TestCaseVersion testCaseVersion;
 
     @OneToMany(mappedBy = "breakage", cascade = CascadeType.ALL, orphanRemoval = true)
-    //JsonManagedReference
     private List<RepairALineOfCode> repairALineOfCodes = new ArrayList<>();
 
     @NotNull

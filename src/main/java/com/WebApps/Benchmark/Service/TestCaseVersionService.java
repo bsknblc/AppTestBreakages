@@ -1,37 +1,45 @@
 package com.WebApps.Benchmark.Service;
 
-import com.WebApps.Benchmark.DTO.BreakageDTO;
 import com.WebApps.Benchmark.DTO.TestCaseVersionDTO;
-import com.WebApps.Benchmark.Model.Breakage;
+import com.WebApps.Benchmark.Mapper.TestCaseVersionMapper;
 import com.WebApps.Benchmark.Model.TestCaseVersion;
+import com.WebApps.Benchmark.Repository.TestCaseRepository;
 import com.WebApps.Benchmark.Repository.TestCaseVersionRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class TestCaseVersionService {
-    @Autowired
-    TestCaseVersionRepository testCaseVersionRepository;
+
+    private final TestCaseVersionRepository testCaseVersionRepository;
+    private final TestCaseRepository testCaseRepository;
+    public TestCaseVersionService(TestCaseVersionRepository testCaseVersionRepository, TestCaseRepository testCaseRepository) {
+        this.testCaseVersionRepository = testCaseVersionRepository;
+        this.testCaseRepository = testCaseRepository;
+    }
 
     public List<TestCaseVersionDTO> findAll(){
         List<TestCaseVersion> testCaseVersions = testCaseVersionRepository.findAll();
-        List<TestCaseVersionDTO> testCaseVersionDTOs = new ArrayList<>();
-        for (TestCaseVersion testCaseVersion: testCaseVersions) {
-            testCaseVersionDTOs.add(new TestCaseVersionDTO());
-        }
-        return testCaseVersionDTOs;
+        return testCaseVersions.stream()
+                .map(TestCaseVersionMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
     public TestCaseVersionDTO findById(int id){
         TestCaseVersion testCaseVersion = testCaseVersionRepository.getReferenceById(id);
-        return new TestCaseVersionDTO();
+        return TestCaseVersionMapper.toDTO(testCaseVersion);
     }
 
-    public TestCaseVersionDTO save(TestCaseVersion testCaseVersion1) {
-        TestCaseVersion testCaseVersion = testCaseVersionRepository.save(testCaseVersion1);
-        return new TestCaseVersionDTO();
+    public TestCaseVersionDTO save(TestCaseVersionDTO testCaseVersionDTO) {
+        TestCaseVersion testCaseVersion = new TestCaseVersion();
+        testCaseVersion.setTestCaseVersionName(testCaseVersionDTO.getTestCaseVersionName());
+        testCaseVersion.setTestCase(testCaseRepository.getReferenceById(testCaseVersionDTO.getTestCaseId()));
+        testCaseVersionRepository.save(testCaseVersion);
+
+        testCaseVersionDTO.setId(testCaseVersion.getId());
+        return testCaseVersionDTO;
     }
 }

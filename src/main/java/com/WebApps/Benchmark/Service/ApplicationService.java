@@ -2,14 +2,10 @@ package com.WebApps.Benchmark.Service;
 
 import com.WebApps.Benchmark.DTO.ApplicationDTO;
 import com.WebApps.Benchmark.Mapper.ApplicationMapper;
-import com.WebApps.Benchmark.Mapper.TestSuiteMapper;
 import com.WebApps.Benchmark.Model.Application;
-import com.WebApps.Benchmark.Model.TestSuite;
 import com.WebApps.Benchmark.Repository.ApplicationRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,10 +30,13 @@ public class ApplicationService {
     }
 
     public ApplicationDTO save(ApplicationDTO applicationDTO) {
-        Application application = ApplicationMapper.toEntity(applicationDTO);
+        Application application = new Application();
+        application.setAppName(applicationDTO.getAppName());
+        application.setUrl(applicationDTO.getUrl());
         applicationRepository.save(application);
+
         applicationDTO.setId(application.getId());
-        return new ApplicationDTO();
+        return applicationDTO;
     }
 
 

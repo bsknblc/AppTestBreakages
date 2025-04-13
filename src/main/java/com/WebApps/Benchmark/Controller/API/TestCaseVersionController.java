@@ -1,10 +1,6 @@
 package com.WebApps.Benchmark.Controller.API;
 
-import com.WebApps.Benchmark.DTO.ApplicationDTO;
 import com.WebApps.Benchmark.DTO.TestCaseVersionDTO;
-import com.WebApps.Benchmark.Model.Application;
-import com.WebApps.Benchmark.Model.TestCaseVersion;
-import com.WebApps.Benchmark.Service.ApplicationService;
 import com.WebApps.Benchmark.Service.TestCaseVersionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,20 +17,17 @@ public class TestCaseVersionController {
 
     @GetMapping
     public ResponseEntity<List<TestCaseVersionDTO>> findAll(){
-        List<TestCaseVersionDTO> testCaseVersionDTOs = testCaseVersionService.findAll();
-        return ResponseEntity.ok(testCaseVersionDTOs);
+        return ResponseEntity.ok(testCaseVersionService.findAll());
     }
 
     @GetMapping("/{test-case-version-id}")
     public ResponseEntity<TestCaseVersionDTO> getTestCaseVersionById(@PathVariable("test-case-version-id") int id) {
-        TestCaseVersionDTO testCaseVersionDTO = testCaseVersionService.findById(id);
-        return ResponseEntity.ok(testCaseVersionDTO);
+        return ResponseEntity.ok(testCaseVersionService.findById(id));
     }
 
     @PostMapping
-    public ResponseEntity<TestCaseVersionDTO> save(@RequestBody TestCaseVersion testCaseVersion) {
-        TestCaseVersionDTO testCaseVersionDTO = testCaseVersionService.save(testCaseVersion);
-        return ResponseEntity.status(HttpStatus.CREATED).body(testCaseVersionDTO);
+    public ResponseEntity<TestCaseVersionDTO> save(@RequestBody TestCaseVersionDTO testCaseVersion) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(testCaseVersionService.save(testCaseVersion));
     }
 
 }

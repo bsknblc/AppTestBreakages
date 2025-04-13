@@ -11,6 +11,8 @@ public class TestSuiteDTO {
     private String testSuiteName;
     private List<TestCaseDTO> testCases = new ArrayList<>();
 
+    public TestSuiteDTO() {}
+
     public TestSuiteDTO(int id, String testSuiteName, List<TestCaseDTO> testCases) {
         this.id = id;
         this.testSuiteName = testSuiteName;

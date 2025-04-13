@@ -1,19 +1,12 @@
 package com.WebApps.Benchmark.Service;
 
-
-import com.WebApps.Benchmark.DTO.ApplicationDTO;
 import com.WebApps.Benchmark.DTO.TestCaseDTO;
 import com.WebApps.Benchmark.Mapper.TestCaseMapper;
-import com.WebApps.Benchmark.Mapper.TestSuiteMapper;
-import com.WebApps.Benchmark.Model.Application;
 import com.WebApps.Benchmark.Model.TestCase;
-import com.WebApps.Benchmark.Model.TestSuite;
 import com.WebApps.Benchmark.Repository.TestCaseRepository;
 import com.WebApps.Benchmark.Repository.TestSuiteRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,8 +34,12 @@ public class TestCaseService {
     }
 
     public TestCaseDTO save(TestCaseDTO testCaseDTO) {
-        TestCase testCase = TestCaseMapper.toEntity(testCaseDTO, testSuiteRepository.getReferenceById(testCaseDTO.getTestSuiteId()));
+        TestCase testCase = new TestCase();
+        testCase.setTestCaseName(testCaseDTO.getTestCaseName());
+        testCase.setDescription(testCaseDTO.getDescription());
+        testCase.setTestSuite(testSuiteRepository.getReferenceById(testCaseDTO.getTestSuiteId()));
         testCaseRepository.save(testCase);
+
         testCaseDTO.setId(testCase.getId());
         return testCaseDTO;
     }

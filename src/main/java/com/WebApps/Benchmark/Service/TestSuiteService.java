@@ -30,8 +30,10 @@ public class TestSuiteService {
     }
 
     public TestSuiteDTO save(TestSuiteDTO testSuiteDTO) {
-        TestSuite testSuite = TestSuiteMapper.toEntity(testSuiteDTO);
+        TestSuite testSuite = new TestSuite();
+        testSuite.setTestSuiteName(testSuiteDTO.getTestSuiteName());
         testSuiteRepository.save(testSuite);
+
         testSuiteDTO.setId(testSuite.getId());
         return testSuiteDTO;
     }

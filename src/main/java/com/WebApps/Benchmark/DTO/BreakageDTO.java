@@ -1,26 +1,22 @@
 package com.WebApps.Benchmark.DTO;
 
-import com.WebApps.Benchmark.Model.AppRelease;
-import com.WebApps.Benchmark.Model.RepairALineOfCode;
-import com.WebApps.Benchmark.Model.TestCaseVersion;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class BreakageDTO {
 
     private int id;
-    private AppRelease appRelease;
-    private TestCaseVersion testCaseVersion;
-    private List<RepairALineOfCode> repairALineOfCodes = new ArrayList<>();
+    private int appReleaseID;
+    private int testCaseVersionID;
+    private List<RepairALineOfCodeDTO> repairALineOfCodes = new ArrayList<>();
     private String taxonomyDescription;
 
-    public BreakageDTO(int id, AppRelease appRelease, TestCaseVersion testCaseVersion, List<RepairALineOfCode> repairALineOfCodes, String taxonomyDescription) {
+    public BreakageDTO() {}
+
+    public BreakageDTO(int id, int appReleaseID, int testCaseVersionID, List<RepairALineOfCodeDTO> repairALineOfCodes, String taxonomyDescription) {
         this.id = id;
-        this.appRelease = appRelease;
-        this.testCaseVersion = testCaseVersion;
+        this.appReleaseID = appReleaseID;
+        this.testCaseVersionID = testCaseVersionID;
         this.repairALineOfCodes = repairALineOfCodes;
         this.taxonomyDescription = taxonomyDescription;
     }
@@ -33,27 +29,27 @@ public class BreakageDTO {
         this.id = id;
     }
 
-    public AppRelease getAppRelease() {
-        return appRelease;
+    public int getAppRelease() {
+        return appReleaseID;
     }
 
-    public void setAppRelease(AppRelease appRelease) {
-        this.appRelease = appRelease;
+    public void setAppRelease(int appReleaseID) {
+        this.appReleaseID = appReleaseID;
     }
 
-    public TestCaseVersion getTestCaseVersion() {
-        return testCaseVersion;
+    public int getTestCaseVersion() {
+        return testCaseVersionID;
     }
 
-    public void setTestCaseVersion(TestCaseVersion testCaseVersion) {
-        this.testCaseVersion = testCaseVersion;
+    public void setTestCaseVersion(int testCaseVersionID) {
+        this.testCaseVersionID = testCaseVersionID;
     }
 
-    public List<RepairALineOfCode> getRepairALineOfCodes() {
+    public List<RepairALineOfCodeDTO> getRepairALineOfCodes() {
         return repairALineOfCodes;
     }
 
-    public void setRepairALineOfCodes(List<RepairALineOfCode> repairALineOfCodes) {
+    public void setRepairALineOfCodes(List<RepairALineOfCodeDTO> repairALineOfCodes) {
         this.repairALineOfCodes = repairALineOfCodes;
     }
 

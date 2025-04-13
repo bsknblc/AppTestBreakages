@@ -1,39 +1,45 @@
 package com.WebApps.Benchmark.Service;
 
 import com.WebApps.Benchmark.DTO.AppReleaseDTO;
+import com.WebApps.Benchmark.Mapper.AppReleaseMapper;
 import com.WebApps.Benchmark.Model.AppRelease;
-import com.WebApps.Benchmark.Model.Application;
 import com.WebApps.Benchmark.Repository.AppReleaseRepository;
 import com.WebApps.Benchmark.Repository.ApplicationRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class AppReleaseService {
-    @Autowired
-    AppReleaseRepository appReleaseRepository;
 
-    @Autowired
-    ApplicationRepository applicationRepository;
+    private final AppReleaseRepository appReleaseRepository;
+    private final ApplicationRepository applicationRepository;
+    public AppReleaseService(AppReleaseRepository appReleaseRepository, ApplicationRepository applicationRepository) {
+        this.appReleaseRepository = appReleaseRepository;
+        this.applicationRepository = applicationRepository;
+    }
 
     public List<AppReleaseDTO> findAll(){
         List<AppRelease> appReleases = appReleaseRepository.findAll();
-        List<AppReleaseDTO> appReleaseDTOs = new ArrayList<>();
-
-        return appReleaseDTOs;
+        return appReleases.stream()
+                .map(AppReleaseMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
     public AppReleaseDTO findById(int id){
         AppRelease appRelease = appReleaseRepository.getReferenceById(id);
-        return new AppReleaseDTO();
+        return AppReleaseMapper.toDTO(appRelease);
     }
 
-    public AppRelease save(AppRelease appRelease) {
-        return appRelease;
-    }
+    public AppReleaseDTO save(AppReleaseDTO appReleaseDTO) {
+        AppRelease appRelease = new AppRelease();
+        appRelease.setReleaseName(appReleaseDTO.getReleaseName());
+        appRelease.setApplication(applicationRepository.getReferenceById(appReleaseDTO.getApplicationID()));
+        appReleaseRepository.save(appRelease);
 
+        appReleaseDTO.setId(appRelease.getId());
+        return appReleaseDTO;
+    }
 
 }

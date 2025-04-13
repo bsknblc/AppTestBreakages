@@ -1,19 +1,29 @@
 package com.WebApps.Benchmark.Mapper;
 
-import com.WebApps.Benchmark.DTO.AppPageDTO;
-import com.WebApps.Benchmark.DTO.ApplicationDTO;
+import com.WebApps.Benchmark.DTO.*;
 import com.WebApps.Benchmark.Model.AppPage;
-import com.WebApps.Benchmark.Model.Application;
-import com.WebApps.Benchmark.Model.TestSuite;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class AppPageMapper {
 
     public static AppPageDTO toDTO(AppPage entity) {
-        return new AppPageDTO();
-    }
+        if (entity == null) return null;
 
-    public static AppPage toEntity(AppPageDTO dto, Application parentApplication) {
-        return new AppPage();
+        List<LineOfCodeDTO> lineOfCodeDTOs = entity.getLineOfCodes() != null
+                ? entity.getLineOfCodes().stream()
+                .map(LineOfCodeMapper::toDTO)
+                .collect(Collectors.toList())
+                : new ArrayList<>();
+
+        return new AppPageDTO(
+                entity.getId(),
+                entity.getPageName(),
+                entity.getApplication() != null ? entity.getApplication().getId() : 0,
+                lineOfCodeDTOs
+        );
     }
 
 }

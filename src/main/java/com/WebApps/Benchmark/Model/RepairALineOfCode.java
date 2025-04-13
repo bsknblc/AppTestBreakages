@@ -15,10 +15,38 @@ public class RepairALineOfCode {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "line_of_code_id", referencedColumnName = "id")
+    @NotNull
     private LineOfCode lineOfCode;
 
     @ManyToOne
     @JoinColumn(name = "breakage_id", nullable = false)
+    @NotNull
     private Breakage breakage;
 
+    public RepairALineOfCode() {}
+
+    public RepairALineOfCode(LineOfCode lineOfCode, Breakage breakage) {
+        this.lineOfCode = lineOfCode;
+        this.breakage = breakage;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public LineOfCode getLineOfCode() {
+        return lineOfCode;
+    }
+
+    public void setLineOfCode(LineOfCode lineOfCode) {
+        this.lineOfCode = lineOfCode;
+    }
+
+    public Breakage getBreakage() {
+        return breakage;
+    }
+
+    public void setBreakage(Breakage breakage) {
+        this.breakage = breakage;
+    }
 }
