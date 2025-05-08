@@ -1,7 +1,5 @@
 package com.WebApps.Benchmark.Model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
@@ -29,7 +27,15 @@ public class Breakage {
     private TestCaseVersion testCaseVersion;
 
     @OneToMany(mappedBy = "breakage", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<RepairALineOfCode> repairALineOfCodes = new ArrayList<>();
+    private List<Repair> repairs = new ArrayList<>();
+
+    @ManyToOne
+    @JoinColumn(name = "breakage_reason_id", nullable = false)
+    private BreakageReason breakageReason;
+
+    @ManyToOne
+    @JoinColumn(name = "locathing_method_id", nullable = false)
+    private LocatingMethod locatingMethod;
 
     @NotNull
     @Column(name = "TAXONOMY_DESCRIPTION")
@@ -63,12 +69,12 @@ public class Breakage {
         this.testCaseVersion = testCaseVersion;
     }
 
-    public List<RepairALineOfCode> getRepairALineOfCodes() {
-        return repairALineOfCodes;
+    public List<Repair> getRepairs() {
+        return repairs;
     }
 
-    public void setRepairALineOfCodes(List<RepairALineOfCode> repairALineOfCodes) {
-        this.repairALineOfCodes = repairALineOfCodes;
+    public void setRepairs(List<Repair> repairs) {
+        this.repairs = repairs;
     }
 
     public String getTaxonomyDescription() {
@@ -77,5 +83,21 @@ public class Breakage {
 
     public void setTaxonomyDescription(String taxonomyDescription) {
         this.taxonomyDescription = taxonomyDescription;
+    }
+
+    public LocatingMethod getLocatingMethod() {
+        return locatingMethod;
+    }
+
+    public void setLocatingMethod(LocatingMethod locatingMethod) {
+        this.locatingMethod = locatingMethod;
+    }
+
+    public BreakageReason getBreakageReason() {
+        return breakageReason;
+    }
+
+    public void setBreakageReason(BreakageReason breakageReason) {
+        this.breakageReason = breakageReason;
     }
 }

@@ -4,8 +4,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "T_REPAIR_A_LINE_OF_CODE")
-public class RepairALineOfCode {
+@Table(name = "T_REPAIR")
+public class Repair {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -13,33 +13,19 @@ public class RepairALineOfCode {
     @Column(name = "ID")
     private int id;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "line_of_code_id", referencedColumnName = "id")
-    @NotNull
-    private LineOfCode lineOfCode;
-
     @ManyToOne
     @JoinColumn(name = "breakage_id", nullable = false)
     @NotNull
     private Breakage breakage;
 
-    public RepairALineOfCode() {}
+    public Repair() {}
 
-    public RepairALineOfCode(LineOfCode lineOfCode, Breakage breakage) {
-        this.lineOfCode = lineOfCode;
+    public Repair(Breakage breakage) {
         this.breakage = breakage;
     }
 
     public int getId() {
         return id;
-    }
-
-    public LineOfCode getLineOfCode() {
-        return lineOfCode;
-    }
-
-    public void setLineOfCode(LineOfCode lineOfCode) {
-        this.lineOfCode = lineOfCode;
     }
 
     public Breakage getBreakage() {

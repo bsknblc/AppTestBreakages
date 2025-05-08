@@ -41,22 +41,6 @@ class BenchmarkApplicationTests {
 
 	@Test
 	@WithMockUser(username = "testuser", roles = {"USER"})
-	public void testCreateAppPage() throws Exception {
-		AppPageDTO dto = new AppPageDTO();
-		dto.setApplication(1);
-		dto.setPageName("app page x");
-
-		mockMvc.perform(post("/api/app_pages")
-						.contentType(MediaType.APPLICATION_JSON)
-						.content(objectMapper.writeValueAsString(dto)))
-				.andExpect(status().isCreated())
-				.andExpect(jsonPath("$.id").exists())
-				.andExpect(jsonPath("$.pageName").value("app page x"))
-				.andExpect(jsonPath("$.application").value(1));
-	}
-
-	@Test
-	@WithMockUser(username = "testuser", roles = {"USER"})
 	public void testCreateAppRelease() throws Exception {
 		AppReleaseDTO dto = new AppReleaseDTO();
 		dto.setApplicationID(1);
@@ -76,13 +60,15 @@ class BenchmarkApplicationTests {
 	public void testCreateTestSuite() throws Exception {
 		TestSuiteDTO dto = new TestSuiteDTO();
 		dto.setTestSuiteName("test suite");
+		dto.setApplicationId(1);
 
 		mockMvc.perform(post("/api/test_suites")
 						.contentType(MediaType.APPLICATION_JSON)
 						.content(objectMapper.writeValueAsString(dto)))
 				.andExpect(status().isCreated())
 				.andExpect(jsonPath("$.id").exists())
-				.andExpect(jsonPath("$.testSuiteName").value("test suite"));
+				.andExpect(jsonPath("$.testSuiteName").value("test suite"))
+				.andExpect(jsonPath("$.applicationId").value(1));
 	}
 
 	@Test
@@ -105,7 +91,7 @@ class BenchmarkApplicationTests {
 
 	@Test
 	@WithMockUser(username = "testuser", roles = {"USER"})
-	public void testCreateTestCaseversions() throws Exception {
+	public void testCreateTestCaseVersions() throws Exception {
 		TestCaseVersionDTO dto = new TestCaseVersionDTO();
 		dto.setTestCaseVersionName("test case version");
 		dto.setTestCaseId(1);
@@ -121,11 +107,41 @@ class BenchmarkApplicationTests {
 
 	@Test
 	@WithMockUser(username = "testuser", roles = {"USER"})
+	public void testCreateBreakageReasons() throws Exception {
+		BreakageReasonDTO dto = new BreakageReasonDTO();
+		dto.setReasonName("unable to locate element");
+
+		mockMvc.perform(post("/api/breakage_reasons")
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(objectMapper.writeValueAsString(dto)))
+				.andExpect(status().isCreated())
+				.andExpect(jsonPath("$.id").exists())
+				.andExpect(jsonPath("$.reasonName").value("unable to locate element"));
+	}
+
+	@Test
+	@WithMockUser(username = "testuser", roles = {"USER"})
+	public void testCreateLocatingMethods() throws Exception {
+		LocatingMethodDTO dto = new LocatingMethodDTO();
+		dto.setLocatingMethodName("xpath");
+
+		mockMvc.perform(post("/api/locating_methods")
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(objectMapper.writeValueAsString(dto)))
+				.andExpect(status().isCreated())
+				.andExpect(jsonPath("$.id").exists())
+				.andExpect(jsonPath("$.locathingMethodName").value("xpath"));
+	}
+
+	@Test
+	@WithMockUser(username = "testuser", roles = {"USER"})
 	public void testCreateBreakages() throws Exception {
 		BreakageDTO dto = new BreakageDTO();
 		dto.setAppRelease(1);
 		dto.setTestCaseVersion(1);
 		dto.setTaxonomyDescription("test taxonomy");
+		dto.setBreakageReasonID(1);
+		dto.setLocatingMethodID(1);
 
 		mockMvc.perform(post("/api/breakages")
 						.contentType(MediaType.APPLICATION_JSON)
@@ -134,30 +150,16 @@ class BenchmarkApplicationTests {
 				.andExpect(jsonPath("$.id").exists())
 				.andExpect(jsonPath("$.taxonomyDescription").value("test taxonomy"))
 				.andExpect(jsonPath("$.appRelease").value(1))
-				.andExpect(jsonPath("$.testCaseVersion").value(1));
+				.andExpect(jsonPath("$.testCaseVersion").value(1))
+				.andExpect(jsonPath("$.breakageReasonID").value(1))
+				.andExpect(jsonPath("$.locatingMethodID").value(1));
 	}
+
 
 	@Test
 	@WithMockUser(username = "testuser", roles = {"USER"})
-	public void testCreateLineOfCodes() throws Exception {
-		LineOfCodeDTO dto = new LineOfCodeDTO();
-		dto.setAppPageID(1);
-		dto.setTestCaseVersionID(1);
-
-		mockMvc.perform(post("/api/line_of_codes")
-						.contentType(MediaType.APPLICATION_JSON)
-						.content(objectMapper.writeValueAsString(dto)))
-				.andExpect(status().isCreated())
-				.andExpect(jsonPath("$.id").exists())
-				.andExpect(jsonPath("$.appPageID").value(1))
-				.andExpect(jsonPath("$.testCaseVersionID").value(1));
-	}
-
-	@Test
-	@WithMockUser(username = "testuser", roles = {"USER"})
-	public void testCreateRepairALineOfCodes() throws Exception {
-		RepairALineOfCodeDTO dto = new RepairALineOfCodeDTO();
-		dto.setLineOfCodeID(1);
+	public void testCreateRepairs() throws Exception {
+		RepairDTO dto = new RepairDTO();
 		dto.setBreakageID(1);
 
 		mockMvc.perform(post("/api/repair_a_line_of_codes")
@@ -165,7 +167,6 @@ class BenchmarkApplicationTests {
 						.content(objectMapper.writeValueAsString(dto)))
 				.andExpect(status().isCreated())
 				.andExpect(jsonPath("$.id").exists())
-				.andExpect(jsonPath("$.lineOfCodeID").value(1))
 				.andExpect(jsonPath("$.breakageID").value(1));
 	}
 

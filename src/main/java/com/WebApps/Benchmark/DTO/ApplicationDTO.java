@@ -1,8 +1,5 @@
 package com.WebApps.Benchmark.DTO;
 
-import com.WebApps.Benchmark.Model.AppPage;
-import com.WebApps.Benchmark.Model.AppRelease;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,16 +9,16 @@ public class ApplicationDTO {
     private String appName;
     private String url;
     private List<AppReleaseDTO> releases = new ArrayList<>();
-    private List<AppPageDTO> pages = new ArrayList<>();
+    private List<TestSuiteDTO> testSuites = new ArrayList<>();
 
     public ApplicationDTO() {}
 
-    public ApplicationDTO(int id, String appName, String url, List<AppReleaseDTO> releases, List<AppPageDTO> pages) {
+    public ApplicationDTO(int id, String appName, String url, List<AppReleaseDTO> releases, List<TestSuiteDTO> testSuites) {
         this.id = id;
         this.appName = appName;
         this.url = url;
         this.releases = releases;
-        this.pages = pages;
+        this.testSuites = testSuites;
     }
 
     public int getId() {
@@ -34,11 +31,6 @@ public class ApplicationDTO {
 
     public String getUrl() {
         return url;
-    }
-
-
-    public List<AppPageDTO> getPages() {
-        return pages;
     }
 
     public void setId(int id) {
@@ -61,7 +53,11 @@ public class ApplicationDTO {
         this.releases = releases;
     }
 
-    public void setPages(List<AppPageDTO> pages) {
-        this.pages = pages;
+    public List<TestSuiteDTO> getTestSuites() {
+        return testSuites;
+    }
+
+    public void setTestSuites(List<TestSuiteDTO> testSuites) {
+        this.testSuites = testSuites;
     }
 }

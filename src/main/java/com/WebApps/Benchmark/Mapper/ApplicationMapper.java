@@ -1,8 +1,8 @@
 package com.WebApps.Benchmark.Mapper;
 
-import com.WebApps.Benchmark.DTO.AppPageDTO;
 import com.WebApps.Benchmark.DTO.AppReleaseDTO;
 import com.WebApps.Benchmark.DTO.ApplicationDTO;
+import com.WebApps.Benchmark.DTO.TestSuiteDTO;
 import com.WebApps.Benchmark.Model.Application;
 
 import java.util.ArrayList;
@@ -14,9 +14,9 @@ public class ApplicationMapper {
     public static ApplicationDTO toDTO(Application entity) {
         if (entity == null) return null;
 
-        List<AppPageDTO> appPageDTOs = entity.getPages() != null
-                ? entity.getPages().stream()
-                .map(AppPageMapper::toDTO)
+        List<TestSuiteDTO> testSuiteDTOS = entity.getTestSuites() != null
+                ? entity.getTestSuites().stream()
+                .map(TestSuiteMapper::toDTO)
                 .collect(Collectors.toList())
                 : new ArrayList<>();
 
@@ -31,7 +31,7 @@ public class ApplicationMapper {
                 entity.getAppName(),
                 entity.getUrl(),
                 appReleaseDTOs,
-                appPageDTOs
+                testSuiteDTOS
         );
     }
 

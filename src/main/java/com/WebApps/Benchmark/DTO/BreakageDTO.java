@@ -8,16 +8,20 @@ public class BreakageDTO {
     private int id;
     private int appReleaseID;
     private int testCaseVersionID;
-    private List<RepairALineOfCodeDTO> repairALineOfCodes = new ArrayList<>();
+    private int breakageReasonID;
+    private int locatingMethodID;
+    private List<RepairDTO> repairs = new ArrayList<>();
     private String taxonomyDescription;
 
     public BreakageDTO() {}
 
-    public BreakageDTO(int id, int appReleaseID, int testCaseVersionID, List<RepairALineOfCodeDTO> repairALineOfCodes, String taxonomyDescription) {
+    public BreakageDTO(int id, int appReleaseID, int testCaseVersionID, int breakageReasonID, int locatingMethodID, List<RepairDTO> repairs, String taxonomyDescription) {
         this.id = id;
         this.appReleaseID = appReleaseID;
         this.testCaseVersionID = testCaseVersionID;
-        this.repairALineOfCodes = repairALineOfCodes;
+        this.breakageReasonID = breakageReasonID;
+        this.locatingMethodID = locatingMethodID;
+        this.repairs = repairs;
         this.taxonomyDescription = taxonomyDescription;
     }
 
@@ -45,12 +49,12 @@ public class BreakageDTO {
         this.testCaseVersionID = testCaseVersionID;
     }
 
-    public List<RepairALineOfCodeDTO> getRepairALineOfCodes() {
-        return repairALineOfCodes;
+    public List<RepairDTO> getRepairs() {
+        return repairs;
     }
 
-    public void setRepairALineOfCodes(List<RepairALineOfCodeDTO> repairALineOfCodes) {
-        this.repairALineOfCodes = repairALineOfCodes;
+    public void setRepairs(List<RepairDTO> repairs) {
+        this.repairs = repairs;
     }
 
     public String getTaxonomyDescription() {
@@ -59,5 +63,21 @@ public class BreakageDTO {
 
     public void setTaxonomyDescription(String taxonomyDescription) {
         this.taxonomyDescription = taxonomyDescription;
+    }
+
+    public int getLocatingMethodID() {
+        return locatingMethodID;
+    }
+
+    public void setLocatingMethodID(int locatingMethodID) {
+        this.locatingMethodID = locatingMethodID;
+    }
+
+    public int getBreakageReasonID() {
+        return breakageReasonID;
+    }
+
+    public void setBreakageReasonID(int breakageReasonID) {
+        this.breakageReasonID = breakageReasonID;
     }
 }

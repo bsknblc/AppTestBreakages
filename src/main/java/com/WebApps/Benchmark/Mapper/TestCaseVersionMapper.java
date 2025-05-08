@@ -1,7 +1,6 @@
 package com.WebApps.Benchmark.Mapper;
 
 import com.WebApps.Benchmark.DTO.BreakageDTO;
-import com.WebApps.Benchmark.DTO.LineOfCodeDTO;
 import com.WebApps.Benchmark.DTO.TestCaseVersionDTO;
 import com.WebApps.Benchmark.Model.*;
 
@@ -15,11 +14,6 @@ public class TestCaseVersionMapper {
     public static TestCaseVersionDTO toDTO(TestCaseVersion entity) {
         if (entity == null) return null;
 
-        List<LineOfCodeDTO> lineOfCodeDTOs= entity.getLineOfCodes() != null
-                ? entity.getLineOfCodes().stream()
-                .map(LineOfCodeMapper::toDTO)
-                .collect(Collectors.toList())
-                : new ArrayList<>();
 
         List<BreakageDTO> breakageDTOs = entity.getBreakages() != null
                 ? entity.getBreakages().stream()
@@ -31,7 +25,6 @@ public class TestCaseVersionMapper {
                 entity.getId(),
                 entity.getTestCaseVersionName(),
                 entity.getTestCase() != null ? entity.getTestCase().getId() : 0,
-                lineOfCodeDTOs,
                 breakageDTOs
         );
     }

@@ -22,12 +22,18 @@ public class TestSuite {
     @Column(name = "NAME")
     private String testSuiteName;
 
+    @ManyToOne
+    @NotNull
+    @JoinColumn(name = "application_id", nullable = false)
+    private Application application;
+
     @OneToMany(mappedBy = "testSuite", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TestCase> testCases = new ArrayList<>();
 
     public TestSuite(){}
 
-    public TestSuite(String testSuiteName) {
+    public TestSuite(String testSuiteName, Application application) {
+        this.application = application;
         this.testSuiteName = testSuiteName;
     }
 
@@ -49,5 +55,13 @@ public class TestSuite {
 
     public void setTestCases(List<TestCase> testCases) {
         this.testCases = testCases;
+    }
+
+    public Application getApplication() {
+        return application;
+    }
+
+    public void setApplication(Application application) {
+        this.application = application;
     }
 }
