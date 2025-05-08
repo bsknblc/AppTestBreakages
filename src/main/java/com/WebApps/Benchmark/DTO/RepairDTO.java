@@ -1,15 +1,13 @@
 package com.WebApps.Benchmark.DTO;
 
-public class RepairALineOfCodeDTO {
+public class RepairDTO {
     private int id;
-    private int lineOfCodeID;
     private int breakageID;
 
-    public RepairALineOfCodeDTO() {}
+    public RepairDTO() {}
 
-    public RepairALineOfCodeDTO(int id, int lineOfCodeID, int breakageID) {
+    public RepairDTO(int id, int breakageID) {
         this.id = id;
-        this.lineOfCodeID = lineOfCodeID;
         this.breakageID = breakageID;
     }
 
@@ -19,14 +17,6 @@ public class RepairALineOfCodeDTO {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public int getLineOfCodeID() {
-        return lineOfCodeID;
-    }
-
-    public void setLineOfCodeID(int lineOfCodeID) {
-        this.lineOfCodeID = lineOfCodeID;
     }
 
     public int getBreakageID() {

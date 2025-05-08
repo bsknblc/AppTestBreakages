@@ -30,7 +30,6 @@ public class TestCase {
     @JoinColumn(name = "test_suite_id", nullable = false)
     private TestSuite testSuite;
 
-    @NotNull
     @Column(name = "DESCRIPTION")
     private String description;
 

@@ -22,6 +22,7 @@ public class TestSuiteMapper {
         return new TestSuiteDTO(
                 entity.getId(),
                 entity.getTestSuiteName(),
+                entity.getApplication() != null ? entity.getApplication().getId() : 0,
                 testCaseDTOs
         );
     }

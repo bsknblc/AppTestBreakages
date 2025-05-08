@@ -1,6 +1,5 @@
 package com.WebApps.Benchmark.Model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
@@ -28,7 +27,7 @@ public class Application {
     private List<AppRelease> releases = new ArrayList<>();
 
     @OneToMany(mappedBy = "application", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<AppPage> pages = new ArrayList<>();
+    private List<TestSuite> testSuites = new ArrayList<>();
 
     public Application(){}
 
@@ -65,11 +64,11 @@ public class Application {
         this.releases = releases;
     }
 
-    public List<AppPage> getPages() {
-        return pages;
+    public List<TestSuite> getTestSuites() {
+        return testSuites;
     }
 
-    public void setPages(List<AppPage> pages) {
-        this.pages = pages;
+    public void setTestSuites(List<TestSuite> testSuites) {
+        this.testSuites = testSuites;
     }
 }

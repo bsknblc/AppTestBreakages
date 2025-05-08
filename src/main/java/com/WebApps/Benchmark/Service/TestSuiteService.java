@@ -3,6 +3,7 @@ package com.WebApps.Benchmark.Service;
 import com.WebApps.Benchmark.DTO.TestSuiteDTO;
 import com.WebApps.Benchmark.Mapper.TestSuiteMapper;
 import com.WebApps.Benchmark.Model.TestSuite;
+import com.WebApps.Benchmark.Repository.ApplicationRepository;
 import com.WebApps.Benchmark.Repository.TestSuiteRepository;
 import org.springframework.stereotype.Service;
 
@@ -13,8 +14,10 @@ import java.util.stream.Collectors;
 public class TestSuiteService {
 
     private final TestSuiteRepository testSuiteRepository;
-    public TestSuiteService(TestSuiteRepository testSuiteRepository) {
+    private final ApplicationRepository applicationRepository;
+    public TestSuiteService(TestSuiteRepository testSuiteRepository, ApplicationRepository applicationRepository) {
         this.testSuiteRepository = testSuiteRepository;
+        this.applicationRepository = applicationRepository;
     }
 
     public List<TestSuiteDTO> findAll(){
@@ -32,6 +35,7 @@ public class TestSuiteService {
     public TestSuiteDTO save(TestSuiteDTO testSuiteDTO) {
         TestSuite testSuite = new TestSuite();
         testSuite.setTestSuiteName(testSuiteDTO.getTestSuiteName());
+        testSuite.setApplication(applicationRepository.getReferenceById(testSuiteDTO.getApplicationId()));
         testSuiteRepository.save(testSuite);
 
         testSuiteDTO.setId(testSuite.getId());

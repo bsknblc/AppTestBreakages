@@ -23,9 +23,6 @@ public class TestCaseVersion {
     private String testCaseVersionName;
 
     @OneToMany(mappedBy = "testCaseVersion", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<LineOfCode> lineOfCodes = new ArrayList<>();
-
-    @OneToMany(mappedBy = "testCaseVersion", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Breakage> breakages = new ArrayList<>();
 
     @ManyToOne
@@ -54,14 +51,6 @@ public class TestCaseVersion {
 
     public void setBreakages(List<Breakage> breakages) {
         this.breakages = breakages;
-    }
-
-    public List<LineOfCode> getLineOfCodes() {
-        return lineOfCodes;
-    }
-
-    public void setLineOfCodes(List<LineOfCode> lineOfCodes) {
-        this.lineOfCodes = lineOfCodes;
     }
 
     public String getTestCaseVersionName() {
