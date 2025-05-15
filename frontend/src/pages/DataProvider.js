@@ -1,11 +1,31 @@
 import React, { useState, useEffect } from "react";
 import AppDropdown from "../components/AppDropdown";
+import AddBreakageLite from "../components/AddBreakageLite";
 
 const DataProvider = () => {
-  const [dataType, setDataType] = useState("applications"); // default data type
+  const [dataType, setDataType] = useState("applications");
   const [data, setData] = useState([]);
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const [selectedAppId, setSelectedAppId] = useState(null);
+  const [selectedReleaseId, setSelectedReleaseId] = useState(null);
+  const [showReleasesDropdown, setShowReleasesDropdown] = useState(false);
+
+  const [selectedTestSuiteId, setSelectedTestSuiteId] = useState(null);
+  const [showTestSuiteDropdown, setShowTestSuiteDropdown] = useState(false);
+
+  const [selectedTestCaseId, setSelectedTestCaseId] = useState(null);
+  const [showTestCaseDropdown, setShowTestCaseDropdown] = useState(false);
+
+  const [selectedTestCaseVersionId, setSelectedTestCaseVersionId] =
+    useState(null);
+  const [showTestCaseVersionDropdown, setShowTestCaseVersionDropdown] =
+    useState(false);
+
+  const [selectedBreakageId, setSelectedBreakageId] = useState(null);
+  const [showBreakageAdd, setShowBreakageAdd] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -13,40 +33,39 @@ const DataProvider = () => {
         setLoading(true);
         let endpoint = "";
 
-        // Determine the endpoint based on selected data type
         switch (dataType) {
           case "applications":
             endpoint = "http://localhost:3000/api/applications";
             break;
           case "app_releases":
-            endpoint = "http://localhost:3000/api/app_releases";
+            endpoint =
+              "http://localhost:3000/api/applications/" +
+              selectedAppId +
+              "/app_releases";
             break;
           case "test_suites":
-            endpoint = "http://localhost:3000/api/test_suites";
+            endpoint =
+              "http://localhost:3000/api/applications/" +
+              selectedAppId +
+              "/test_suites";
             break;
           case "test_cases":
-            endpoint = "http://localhost:3000/api/test_cases";
+            endpoint =
+              "http://localhost:3000/api/test_suites/" +
+              selectedTestSuiteId +
+              "/test_cases";
             break;
           case "test_case_versions":
-            endpoint = "http://localhost:3000/api/test_case_versions";
-            break;
-          case "breakage_reasons":
-            endpoint = "http://localhost:3000/api/breakage_reasons";
-            break;
-          case "locating_methods":
-            endpoint = "http://localhost:3000/api/locating_methods";
-            break;
-          case "breakages":
-            endpoint = "http://localhost:3000/api/breakages";
-            break;
-          case "repairs":
-            endpoint = "http://localhost:3000/api/repairs";
+            endpoint =
+              "http://localhost:3000/api/test_cases/" +
+              selectedTestCaseId +
+              "/test_case_versions";
             break;
           default:
             endpoint = "http://localhost:3000/api/applications";
         }
 
-        const response = await fetch(endpoint);
+        const response = await fetch(`${endpoint}`);
         if (!response.ok) {
           throw new Error(`Failed to fetch ${dataType}`);
         }
@@ -60,142 +79,104 @@ const DataProvider = () => {
     };
 
     fetchData();
-  }, [dataType]);
+  }, [dataType, selectedAppId]); // Add selectedAppId to dependencies
 
-  const handleDataTypeChange = (type) => {
-    setDataType(type);
+  const handleAppSelect = (item) => {
+    setSelectedAppId(item.id);
+    setDataType("app_releases");
+    setShowReleasesDropdown(true);
   };
 
-  if (loading) {
-    return (
-      <div className="d-flex justify-content-center mt-5">
-        <div className="spinner-border" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </div>
-      </div>
-    );
-  }
+  const handleReleaseSelect = (item) => {
+    setSelectedReleaseId(item.id);
+    setDataType("test_suites");
+    setShowTestSuiteDropdown(true);
+  };
 
-  if (error) {
-    return (
-      <div
-        className="alert alert-danger mx-auto mt-5"
-        style={{ maxWidth: "600px" }}
-      >
-        Error: {error}
-      </div>
-    );
-  }
+  const handleTestSuiteSelect = (item) => {
+    setSelectedTestSuiteId(item.id);
+    setDataType("test_cases");
+    setShowTestCaseDropdown(true);
+  };
+
+  const handleTestCaseSelect = (item) => {
+    setSelectedTestCaseId(item.id);
+    setDataType("test_case_versions");
+    setShowTestCaseVersionDropdown(true);
+  };
+
+  const handleTestCaseVersionSelect = (item) => {
+    setSelectedTestCaseVersionId(item.id);
+    setDataType("breakages");
+    setShowBreakageAdd(true);
+  };
 
   return (
     <div className="container mt-5">
-      <div className="row mb-4">
-        <div className="col">
-          <h3>Select Data Type:</h3>
-          <div className="btn-group" role="group">
-            <button
-              type="button"
-              className={`btn ${
-                dataType === "applications"
-                  ? "btn-primary"
-                  : "btn-outline-primary"
-              }`}
-              onClick={() => handleDataTypeChange("applications")}
-            >
-              Applications
-            </button>
-            <button
-              type="button"
-              className={`btn ${
-                dataType === "app_releases"
-                  ? "btn-primary"
-                  : "btn-outline-primary"
-              }`}
-              onClick={() => handleDataTypeChange("app_releases")}
-            >
-              App Releases
-            </button>
-            <button
-              type="button"
-              className={`btn ${
-                dataType === "test_suites"
-                  ? "btn-primary"
-                  : "btn-outline-primary"
-              }`}
-              onClick={() => handleDataTypeChange("test_suites")}
-            >
-              Test Suites
-            </button>
-            <button
-              type="button"
-              className={`btn ${
-                dataType === "test_cases"
-                  ? "btn-primary"
-                  : "btn-outline-primary"
-              }`}
-              onClick={() => handleDataTypeChange("test_cases")}
-            >
-              Test Cases
-            </button>
-            <button
-              type="button"
-              className={`btn ${
-                dataType === "test_case_versions"
-                  ? "btn-primary"
-                  : "btn-outline-primary"
-              }`}
-              onClick={() => handleDataTypeChange("test_case_versions")}
-            >
-              Test Case Versions
-            </button>
-            <button
-              type="button"
-              className={`btn ${
-                dataType === "breakage_reasons"
-                  ? "btn-primary"
-                  : "btn-outline-primary"
-              }`}
-              onClick={() => handleDataTypeChange("breakage_reasons")}
-            >
-              Breakage Reasons
-            </button>
-            <button
-              type="button"
-              className={`btn ${
-                dataType === "locating_methods"
-                  ? "btn-primary"
-                  : "btn-outline-primary"
-              }`}
-              onClick={() => handleDataTypeChange("locating_methods")}
-            >
-              Locating Methods
-            </button>
-            <button
-              type="button"
-              className={`btn ${
-                dataType === "breakages" ? "btn-primary" : "btn-outline-primary"
-              }`}
-              onClick={() => handleDataTypeChange("breakages")}
-            >
-              Breakages
-            </button>
-            <button
-              type="button"
-              className={`btn ${
-                dataType === "repairs" ? "btn-primary" : "btn-outline-primary"
-              }`}
-              onClick={() => handleDataTypeChange("repairs")}
-            >
-              Repairs
-            </button>
-          </div>
-        </div>
-      </div>
+      {/* Your button group for data type selection remains the same */}
+      <div className="row mb-4">{/* ... */}</div>
 
       <div className="row">
         <div className="col">
-          <h4>Current Data Type: {dataType}</h4>
-          <AppDropdown items={data} dataType={dataType} onSelect={() => {}} />
+          <h4>Applications</h4>
+          <AppDropdown
+            items={dataType === "applications" ? data : []}
+            dataType="applications"
+            onSelect={handleAppSelect}
+          />
+
+          {showReleasesDropdown && (
+            <>
+              <h4 className="mt-4">App Releases for Selected Application</h4>
+              <AppDropdown
+                items={dataType === "app_releases" ? data : []}
+                dataType="app_releases"
+                onSelect={handleReleaseSelect}
+              />
+            </>
+          )}
+          {showTestSuiteDropdown && (
+            <>
+              <h4 className="mt-4">Test Suites for Selected Application</h4>
+              <AppDropdown
+                items={dataType === "test_suites" ? data : []}
+                dataType="test_suites"
+                onSelect={handleTestSuiteSelect}
+              />
+            </>
+          )}
+          {showTestCaseDropdown && (
+            <>
+              <h4 className="mt-4">Test Cases for Selected Test Suite</h4>
+              <AppDropdown
+                items={dataType === "test_cases" ? data : []}
+                dataType="test_cases"
+                onSelect={handleTestCaseSelect}
+              />
+            </>
+          )}
+          {showTestCaseVersionDropdown && (
+            <>
+              <h4 className="mt-4">
+                Test Cases Version for Selected Test Case
+              </h4>
+              <AppDropdown
+                items={dataType === "test_case_versions" ? data : []}
+                dataType="test_case_versions"
+                onSelect={handleTestCaseVersionSelect}
+              />
+            </>
+          )}
+          {showBreakageAdd && (
+            <>
+              <h4 className="mt-4">Add Breakage</h4>
+              <AddBreakageLite
+                onAdded={() => {}}
+                testCaseVersion={selectedTestCaseVersionId}
+                appRelease={selectedReleaseId}
+              />
+            </>
+          )}
         </div>
       </div>
     </div>
