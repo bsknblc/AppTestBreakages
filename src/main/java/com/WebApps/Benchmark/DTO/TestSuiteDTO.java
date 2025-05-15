@@ -1,7 +1,5 @@
 package com.WebApps.Benchmark.DTO;
 
-import com.WebApps.Benchmark.Model.TestCase;
-
 import java.util.ArrayList;
 import java.util.List;
 

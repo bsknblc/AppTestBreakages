@@ -43,7 +43,7 @@ class BenchmarkApplicationTests {
 	@WithMockUser(username = "testuser", roles = {"USER"})
 	public void testCreateAppRelease() throws Exception {
 		AppReleaseDTO dto = new AppReleaseDTO();
-		dto.setApplicationID(1);
+		dto.setApplicationId(1);
 		dto.setReleaseName("1.1");
 
 		mockMvc.perform(post("/api/app_releases")
@@ -52,7 +52,7 @@ class BenchmarkApplicationTests {
 				.andExpect(status().isCreated())
 				.andExpect(jsonPath("$.id").exists())
 				.andExpect(jsonPath("$.releaseName").value("1.1"))
-				.andExpect(jsonPath("$.applicationID").value(1));
+				.andExpect(jsonPath("$.applicationId").value(1));
 	}
 
 	@Test
@@ -130,18 +130,18 @@ class BenchmarkApplicationTests {
 						.content(objectMapper.writeValueAsString(dto)))
 				.andExpect(status().isCreated())
 				.andExpect(jsonPath("$.id").exists())
-				.andExpect(jsonPath("$.locathingMethodName").value("xpath"));
+				.andExpect(jsonPath("$.locatingMethodName").value("xpath"));
 	}
 
 	@Test
 	@WithMockUser(username = "testuser", roles = {"USER"})
 	public void testCreateBreakages() throws Exception {
 		BreakageDTO dto = new BreakageDTO();
-		dto.setAppRelease(1);
-		dto.setTestCaseVersion(1);
+		dto.setAppReleaseId(1);
+		dto.setTestCaseVersionId(1);
 		dto.setTaxonomyDescription("test taxonomy");
-		dto.setBreakageReasonID(1);
-		dto.setLocatingMethodID(1);
+		dto.setBreakageReasonId(1);
+		dto.setLocatingMethodId(1);
 
 		mockMvc.perform(post("/api/breakages")
 						.contentType(MediaType.APPLICATION_JSON)
@@ -149,10 +149,10 @@ class BenchmarkApplicationTests {
 				.andExpect(status().isCreated())
 				.andExpect(jsonPath("$.id").exists())
 				.andExpect(jsonPath("$.taxonomyDescription").value("test taxonomy"))
-				.andExpect(jsonPath("$.appRelease").value(1))
-				.andExpect(jsonPath("$.testCaseVersion").value(1))
-				.andExpect(jsonPath("$.breakageReasonID").value(1))
-				.andExpect(jsonPath("$.locatingMethodID").value(1));
+				.andExpect(jsonPath("$.appReleaseId").value(1))
+				.andExpect(jsonPath("$.testCaseVersionId").value(1))
+				.andExpect(jsonPath("$.breakageReasonId").value(1))
+				.andExpect(jsonPath("$.locatingMethodId").value(1));
 	}
 
 
@@ -160,14 +160,16 @@ class BenchmarkApplicationTests {
 	@WithMockUser(username = "testuser", roles = {"USER"})
 	public void testCreateRepairs() throws Exception {
 		RepairDTO dto = new RepairDTO();
-		dto.setBreakageID(1);
+		dto.setBreakageId(1);
+		dto.setCommitHash("test hash");
 
-		mockMvc.perform(post("/api/repair_a_line_of_codes")
+		mockMvc.perform(post("/api/repairs")
 						.contentType(MediaType.APPLICATION_JSON)
 						.content(objectMapper.writeValueAsString(dto)))
 				.andExpect(status().isCreated())
 				.andExpect(jsonPath("$.id").exists())
-				.andExpect(jsonPath("$.breakageID").value(1));
+				.andExpect(jsonPath("$.breakageId").value(1))
+				.andExpect(jsonPath("$.commitHash").value("test hash"));
 	}
 
 }

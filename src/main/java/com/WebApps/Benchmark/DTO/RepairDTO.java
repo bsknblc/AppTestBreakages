@@ -2,13 +2,15 @@ package com.WebApps.Benchmark.DTO;
 
 public class RepairDTO {
     private int id;
-    private int breakageID;
+    private int breakageId;
+    private String commitHash;
 
     public RepairDTO() {}
 
-    public RepairDTO(int id, int breakageID) {
+    public RepairDTO(int id, int breakageId, String commitHash) {
         this.id = id;
-        this.breakageID = breakageID;
+        this.breakageId = breakageId;
+        this.commitHash = commitHash;
     }
 
     public int getId() {
@@ -19,11 +21,19 @@ public class RepairDTO {
         this.id = id;
     }
 
-    public int getBreakageID() {
-        return breakageID;
+    public int getBreakageId() {
+        return breakageId;
     }
 
-    public void setBreakageID(int breakageID) {
-        this.breakageID = breakageID;
+    public void setBreakageId(int breakageId) {
+        this.breakageId = breakageId;
+    }
+
+    public String getCommitHash() {
+        return commitHash;
+    }
+
+    public void setCommitHash(String commitHash) {
+        this.commitHash = commitHash;
     }
 }

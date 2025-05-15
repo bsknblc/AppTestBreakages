@@ -37,14 +37,35 @@ public class BreakageService {
         return BreakageMapper.toDTO(breakage);
     }
 
+    public List<BreakageDTO> findByTestCaseVersionId(int testCaseVersionId){
+        List<Breakage> breakages = breakageRepository.findByTestCaseVersion_Id(testCaseVersionId);
+        return breakages.stream()
+                .map(BreakageMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<BreakageDTO> findByBreakageReasonId(int breakageReasonId){
+        List<Breakage> breakages = breakageRepository.findByBreakageReason_Id(breakageReasonId);
+        return breakages.stream()
+                .map(BreakageMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<BreakageDTO> findByLocatingMethodId(int locatingMethodId){
+        List<Breakage> breakages = breakageRepository.findByLocatingMethod_Id(locatingMethodId);
+        return breakages.stream()
+                .map(BreakageMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
     public BreakageDTO save(BreakageDTO breakageDTO) {
         Breakage breakage = new Breakage();
         breakage.setTaxonomyDescription(breakageDTO.getTaxonomyDescription());
-        breakage.setAppRelease(appReleaseRepository.getReferenceById(breakageDTO.getAppRelease()));
-        breakage.setTestCaseVersion(testCaseVersionRepository.getReferenceById(breakageDTO.getTestCaseVersion()));
-        breakage.setBreakageReason(breakageReasonRepository.getReferenceById(breakageDTO.getBreakageReasonID()));
-        if (breakageDTO.getLocatingMethodID() != 0) {
-            breakage.setLocatingMethod(locatingMethodRepository.getReferenceById(breakageDTO.getLocatingMethodID()));
+        breakage.setAppRelease(appReleaseRepository.getReferenceById(breakageDTO.getAppReleaseId()));
+        breakage.setTestCaseVersion(testCaseVersionRepository.getReferenceById(breakageDTO.getTestCaseVersionId()));
+        breakage.setBreakageReason(breakageReasonRepository.getReferenceById(breakageDTO.getBreakageReasonId()));
+        if (breakageDTO.getLocatingMethodId() != 0) {
+            breakage.setLocatingMethod(locatingMethodRepository.getReferenceById(breakageDTO.getLocatingMethodId()));
         }
         breakageRepository.save(breakage);
 

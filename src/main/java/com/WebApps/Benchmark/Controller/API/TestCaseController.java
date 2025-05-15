@@ -1,7 +1,9 @@
 package com.WebApps.Benchmark.Controller.API;
 
 import com.WebApps.Benchmark.DTO.TestCaseDTO;
+import com.WebApps.Benchmark.DTO.TestCaseVersionDTO;
 import com.WebApps.Benchmark.Service.TestCaseService;
+import com.WebApps.Benchmark.Service.TestCaseVersionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,8 +15,10 @@ import java.util.List;
 public class TestCaseController {
 
     private final TestCaseService testCaseService;
-    public TestCaseController(TestCaseService testCaseService) {
+    private final TestCaseVersionService testCaseVersionService;
+    public TestCaseController(TestCaseService testCaseService, TestCaseVersionService testCaseVersionService) {
         this.testCaseService = testCaseService;
+        this.testCaseVersionService = testCaseVersionService;
     }
 
     @GetMapping
@@ -25,6 +29,11 @@ public class TestCaseController {
     @GetMapping("/{test-case-id}")
     public ResponseEntity<TestCaseDTO> getTestCaseById(@PathVariable("test-case-id") int id) {
         return ResponseEntity.ok(testCaseService.findById(id));
+    }
+
+    @GetMapping("/{test-case-id}/test_case_versions")
+    public ResponseEntity<List<TestCaseVersionDTO>> getTestCaseVersionByTestCaseId(@PathVariable("test-case-id") int id) {
+        return ResponseEntity.ok(testCaseVersionService.findByTestCaseId(id));
     }
 
     @PostMapping

@@ -32,6 +32,13 @@ public class TestSuiteService {
         return TestSuiteMapper.toDTO(testSuite);
     }
 
+    public List<TestSuiteDTO> findByApplication_Id(int applicationId){
+        List<TestSuite> testSuites = testSuiteRepository.findByApplication_Id(applicationId);
+        return testSuites.stream()
+                .map(TestSuiteMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
     public TestSuiteDTO save(TestSuiteDTO testSuiteDTO) {
         TestSuite testSuite = new TestSuite();
         testSuite.setTestSuiteName(testSuiteDTO.getTestSuiteName());

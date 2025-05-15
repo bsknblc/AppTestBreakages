@@ -18,6 +18,10 @@ public class Repair {
     @NotNull
     private Breakage breakage;
 
+    @Column(name = "COMMIT_HASH")
+    @NotNull
+    private String commitHash;
+
     public Repair() {}
 
     public Repair(Breakage breakage) {
@@ -35,4 +39,13 @@ public class Repair {
     public void setBreakage(Breakage breakage) {
         this.breakage = breakage;
     }
+
+    public String getCommitHash() {
+        return commitHash;
+    }
+
+    public void setCommitHash(String commitHash) {
+        this.commitHash = commitHash;
+    }
+
 }

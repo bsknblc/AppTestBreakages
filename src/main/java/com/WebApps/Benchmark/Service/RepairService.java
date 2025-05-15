@@ -31,9 +31,17 @@ public class RepairService {
         return RepairMapper.toDTO(repair);
     }
 
+    public List<RepairDTO> findByBreakageId(int breakageId){
+        List<Repair> repairs = repairRepository.findByBreakage_Id(breakageId);
+        return repairs.stream()
+                .map(RepairMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
     public RepairDTO save(RepairDTO repairDTO) {
         Repair repair = new Repair();
-        repair.setBreakage(breakageRepository.getReferenceById(repairDTO.getBreakageID()));
+        repair.setBreakage(breakageRepository.getReferenceById(repairDTO.getBreakageId()));
+        repair.setCommitHash(repairDTO.getCommitHash());
         repairRepository.save(repair);
 
         repairDTO.setId(repair.getId());

@@ -1,6 +1,8 @@
 package com.WebApps.Benchmark.Controller.API;
 
+import com.WebApps.Benchmark.DTO.BreakageDTO;
 import com.WebApps.Benchmark.DTO.LocatingMethodDTO;
+import com.WebApps.Benchmark.Service.BreakageService;
 import com.WebApps.Benchmark.Service.LocatingMethodService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,8 +15,10 @@ import java.util.List;
 public class LocatingMethodController {
 
     private final LocatingMethodService locatingMethodService;
-    public LocatingMethodController(LocatingMethodService locatingMethodService) {
+    private final BreakageService breakageService;
+    public LocatingMethodController(LocatingMethodService locatingMethodService, BreakageService breakageService) {
         this.locatingMethodService = locatingMethodService;
+        this.breakageService = breakageService;
     }
 
     @GetMapping
@@ -25,6 +29,11 @@ public class LocatingMethodController {
     @GetMapping("/{locating_method-id}")
     public ResponseEntity<LocatingMethodDTO> getLocatingMethodById(@PathVariable("locating_method-id") int id) {
         return ResponseEntity.ok(locatingMethodService.findById(id));
+    }
+
+    @GetMapping("/{locating_method-id}/breakages")
+    public ResponseEntity<List<BreakageDTO>> getBreakageByLocatingMethodId(@PathVariable("locating_method-id") int id) {
+        return ResponseEntity.ok(breakageService.findByLocatingMethodId(id));
     }
 
     @PostMapping

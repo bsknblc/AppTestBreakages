@@ -2,9 +2,7 @@ package com.WebApps.Benchmark.Mapper;
 
 import com.WebApps.Benchmark.DTO.BreakageDTO;
 import com.WebApps.Benchmark.DTO.BreakageReasonDTO;
-import com.WebApps.Benchmark.DTO.LocatingMethodDTO;
 import com.WebApps.Benchmark.Model.BreakageReason;
-import com.WebApps.Benchmark.Model.LocatingMethod;
 
 import java.util.ArrayList;
 import java.util.List;

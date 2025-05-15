@@ -1,8 +1,5 @@
 package com.WebApps.Benchmark.DTO;
 
-import com.WebApps.Benchmark.Model.Application;
-import com.WebApps.Benchmark.Model.Breakage;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,15 +8,15 @@ public class AppReleaseDTO {
     private int id;
     private String releaseName;
     private List<BreakageDTO> breakages = new ArrayList<>();
-    private int applicationID;
+    private int applicationId;
 
     public AppReleaseDTO() {}
 
-    public AppReleaseDTO(int id, String releaseName, List<BreakageDTO> breakages, int applicationID) {
+    public AppReleaseDTO(int id, String releaseName, List<BreakageDTO> breakages, int applicationId) {
         this.id = id;
         this.releaseName = releaseName;
         this.breakages = breakages;
-        this.applicationID = applicationID;
+        this.applicationId = applicationId;
     }
 
     public int getId() {
@@ -46,11 +43,11 @@ public class AppReleaseDTO {
         this.breakages = breakages;
     }
 
-    public int getApplicationID() {
-        return applicationID;
+    public int getApplicationId() {
+        return applicationId;
     }
 
-    public void setApplicationID(int applicationID) {
-        this.applicationID = applicationID;
+    public void setApplicationId(int applicationId) {
+        this.applicationId = applicationId;
     }
 }

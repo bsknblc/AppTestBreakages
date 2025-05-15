@@ -10,7 +10,8 @@ public class RepairMapper {
 
         return new RepairDTO(
                 entity.getId(),
-                entity.getBreakage() != null ? entity.getBreakage().getId() : 0
+                entity.getBreakage() != null ? entity.getBreakage().getId() : 0,
+                entity.getCommitHash()
         );
     }
 
