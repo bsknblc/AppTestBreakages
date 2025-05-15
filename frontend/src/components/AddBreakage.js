@@ -3,11 +3,11 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "../MyStyle.css";
 import AppDropdown from "./AppDropdown";
 
-const AddBreakage = ({ onAdded }) => {
+const AddBreakage = ({ onAdded, testCaseVersion, appRelease }) => {
   const [formData, setFormData] = useState({
     taxonomyDescription: "",
-    testCaseVersionId: null,
-    appReleaseId: null,
+    testCaseVersionId: testCaseVersion || null,
+    appReleaseId: appRelease || null,
     breakageReasonId: null,
     locatingMethodId: null,
   });
@@ -18,8 +18,8 @@ const AddBreakage = ({ onAdded }) => {
   const [error, setError] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
-  const [testCaseVersion, setTestCaseVersion] = useState([]);
-  const [appRelease, setAppRelease] = useState([]);
+  const [testCaseVersions, setTestCaseVersion] = useState([]);
+  const [appReleases, setAppRelease] = useState([]);
   const [breakageReason, setBreakageReason] = useState([]);
   const [locatingMethod, setLocatingMethod] = useState(true);
   const [loading, setLoading] = useState(true);
@@ -104,13 +104,17 @@ const AddBreakage = ({ onAdded }) => {
       onAdded();
       setFormData({
         taxonomyDescription: "",
-        testCaseVersionId: null,
-        appReleaseId: null,
+        testCaseVersionId: testCaseVersion || null,
+        appReleaseId: appRelease || null,
         breakageReasonId: null,
         locatingMethodId: null,
       });
-      setSelectedTestCaseVersion(null);
-      setSelectedAppRelease(null);
+      if (testCaseVersion === null) {
+        setSelectedTestCaseVersion(null);
+      }
+      if (appRelease === null) {
+        setSelectedAppRelease(null);
+      }
       setSelectedBreakageReason(null);
       setSelectedLocatingMethod(null);
       setSuccess(true);
@@ -136,56 +140,60 @@ const AddBreakage = ({ onAdded }) => {
         )}
 
         <form onSubmit={handleSubmit}>
-          <div className="mb-3">
-            <label htmlFor="testCaseVersionId" className="form-label">
-              Test Case Version
-            </label>
-            {loading ? (
-              <div className="d-flex justify-content-center">
-                <div className="spinner-border" role="status">
-                  <span className="visually-hidden">Loading...</span>
+          {!testCaseVersion && (
+            <div className="mb-3">
+              <label htmlFor="testCaseVersionId" className="form-label">
+                Test Case Version
+              </label>
+              {loading ? (
+                <div className="d-flex justify-content-center">
+                  <div className="spinner-border" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                  </div>
                 </div>
-              </div>
-            ) : (
-              <AppDropdown
-                items={testCaseVersion}
-                dataType="test_case_versions"
-                onSelect={(item) =>
-                  handleDropdownSelect(
-                    item,
-                    "testCaseVersionId",
-                    setSelectedTestCaseVersion
-                  )
-                }
-                selectedItem={selectedTestCaseVersion}
-              />
-            )}
-          </div>
-          <div className="mb-3">
-            <label htmlFor="appReleaseId" className="form-label">
-              App Release
-            </label>
-            {loading ? (
-              <div className="d-flex justify-content-center">
-                <div className="spinner-border" role="status">
-                  <span className="visually-hidden">Loading...</span>
+              ) : (
+                <AppDropdown
+                  items={testCaseVersions}
+                  dataType="test_case_versions"
+                  onSelect={(item) =>
+                    handleDropdownSelect(
+                      item,
+                      "testCaseVersionId",
+                      setSelectedTestCaseVersion
+                    )
+                  }
+                  selectedItem={selectedTestCaseVersion}
+                />
+              )}
+            </div>
+          )}
+          {!appRelease && (
+            <div className="mb-3">
+              <label htmlFor="appReleaseId" className="form-label">
+                App Release
+              </label>
+              {loading ? (
+                <div className="d-flex justify-content-center">
+                  <div className="spinner-border" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                  </div>
                 </div>
-              </div>
-            ) : (
-              <AppDropdown
-                items={appRelease}
-                dataType="app_releases"
-                onSelect={(item) =>
-                  handleDropdownSelect(
-                    item,
-                    "appReleaseId",
-                    setSelectedAppRelease
-                  )
-                }
-                selectedItem={selectedAppRelease}
-              />
-            )}
-          </div>
+              ) : (
+                <AppDropdown
+                  items={appReleases}
+                  dataType="app_releases"
+                  onSelect={(item) =>
+                    handleDropdownSelect(
+                      item,
+                      "appReleaseId",
+                      setSelectedAppRelease
+                    )
+                  }
+                  selectedItem={selectedAppRelease}
+                />
+              )}
+            </div>
+          )}
           <div className="mb-3">
             <label htmlFor="breakageReasonId" className="form-label">
               Breakage Reason

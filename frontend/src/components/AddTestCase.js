@@ -3,11 +3,11 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "../MyStyle.css";
 import AppDropdown from "./AppDropdown";
 
-const AddTestCase = ({ onAdded }) => {
+const AddTestCase = ({ onAdded, testSuite }) => {
   const [formData, setFormData] = useState({
     testCaseName: "",
     description: "",
-    testSuiteId: null,
+    testSuiteId: testSuite || null,
   });
   const [selectedTestSuite, setSelectedTestSuite] = useState(null);
   const [error, setError] = useState(null);
@@ -17,22 +17,24 @@ const AddTestCase = ({ onAdded }) => {
   const [loadingSuites, setLoadingSuites] = useState(true);
 
   useEffect(() => {
-    const fetchTestSuites = async () => {
-      try {
-        const response = await fetch("http://localhost:3000/api/test_suites");
-        if (!response.ok) {
-          throw new Error("Failed to fetch test suites");
+    if (testSuite === null) {
+      const fetchTestSuites = async () => {
+        try {
+          const response = await fetch("http://localhost:3000/api/test_suites");
+          if (!response.ok) {
+            throw new Error("Failed to fetch test suites");
+          }
+          const data = await response.json();
+          setTestSuites(data);
+        } catch (err) {
+          setError(err.message);
+        } finally {
+          setLoadingSuites(false);
         }
-        const data = await response.json();
-        setTestSuites(data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoadingSuites(false);
-      }
-    };
+      };
 
-    fetchTestSuites();
+      fetchTestSuites();
+    }
   }, []);
 
   const handleChange = (e) => {
@@ -71,8 +73,14 @@ const AddTestCase = ({ onAdded }) => {
       }
 
       onAdded();
-      setFormData({ testCaseName: "", description: "", testSuiteId: null });
-      setSelectedTestSuite(null);
+      setFormData({
+        testCaseName: "",
+        description: "",
+        testSuiteId: testSuite || null,
+      });
+      if (testSuite === null) {
+        setSelectedTestSuite(null);
+      }
       setSuccess(true);
       setTimeout(() => setSuccess(false), 3000);
     } catch (err) {
@@ -96,25 +104,27 @@ const AddTestCase = ({ onAdded }) => {
         )}
 
         <form onSubmit={handleSubmit}>
-          <div className="mb-3">
-            <label htmlFor="testSuiteId" className="form-label">
-              Test Suite
-            </label>
-            {loadingSuites ? (
-              <div className="d-flex justify-content-center">
-                <div className="spinner-border" role="status">
-                  <span className="visually-hidden">Loading...</span>
+          {!testSuite && (
+            <div className="mb-3">
+              <label htmlFor="testSuiteId" className="form-label">
+                Test Suite
+              </label>
+              {loadingSuites ? (
+                <div className="d-flex justify-content-center">
+                  <div className="spinner-border" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                  </div>
                 </div>
-              </div>
-            ) : (
-              <AppDropdown
-                items={testSuites}
-                dataType="test_suites"
-                onSelect={handleTestSuiteSelect}
-                selectedItem={selectedTestSuite}
-              />
-            )}
-          </div>
+              ) : (
+                <AppDropdown
+                  items={testSuites}
+                  dataType="test_suites"
+                  onSelect={handleTestSuiteSelect}
+                  selectedItem={selectedTestSuite}
+                />
+              )}
+            </div>
+          )}
           <div className="mb-3">
             <label htmlFor="testCaseName" className="form-label">
               Test Case Name

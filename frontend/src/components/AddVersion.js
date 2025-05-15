@@ -3,10 +3,10 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "../MyStyle.css";
 import AppDropdown from "./AppDropdown";
 
-const AddVersion = ({ onAdded }) => {
+const AddVersion = ({ onAdded, application }) => {
   const [formData, setFormData] = useState({
     releaseName: "",
-    applicationId: null,
+    applicationId: application || null,
   });
   const [selectedApplication, setSelectedApplication] = useState(null);
   const [error, setError] = useState(null);
@@ -16,22 +16,26 @@ const AddVersion = ({ onAdded }) => {
   const [loadingApps, setLoadingApps] = useState(true);
 
   useEffect(() => {
-    const fetchApplications = async () => {
-      try {
-        const response = await fetch("http://localhost:3000/api/applications");
-        if (!response.ok) {
-          throw new Error("Failed to fetch applications");
+    if (application === null) {
+      const fetchApplications = async () => {
+        try {
+          const response = await fetch(
+            "http://localhost:3000/api/applications"
+          );
+          if (!response.ok) {
+            throw new Error("Failed to fetch applications");
+          }
+          const data = await response.json();
+          setApplications(data);
+        } catch (err) {
+          setError(err.message);
+        } finally {
+          setLoadingApps(false);
         }
-        const data = await response.json();
-        setApplications(data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoadingApps(false);
-      }
-    };
+      };
 
-    fetchApplications();
+      fetchApplications();
+    }
   }, []);
 
   const handleChange = (e) => {
@@ -70,8 +74,10 @@ const AddVersion = ({ onAdded }) => {
       }
 
       onAdded();
-      setFormData({ releaseName: "", applicationId: null });
-      setSelectedApplication(null);
+      setFormData({ releaseName: "", applicationId: application || null });
+      if (application === null) {
+        setSelectedApplication(null);
+      }
       setSuccess(true);
       setTimeout(() => setSuccess(false), 3000);
     } catch (err) {
@@ -95,25 +101,27 @@ const AddVersion = ({ onAdded }) => {
         )}
 
         <form onSubmit={handleSubmit}>
-          <div className="mb-3">
-            <label htmlFor="applicationId" className="form-label">
-              Application
-            </label>
-            {loadingApps ? (
-              <div className="d-flex justify-content-center">
-                <div className="spinner-border" role="status">
-                  <span className="visually-hidden">Loading...</span>
+          {!application && (
+            <div className="mb-3">
+              <label htmlFor="applicationId" className="form-label">
+                Application
+              </label>
+              {loadingApps ? (
+                <div className="d-flex justify-content-center">
+                  <div className="spinner-border" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                  </div>
                 </div>
-              </div>
-            ) : (
-              <AppDropdown
-                items={applications}
-                dataType="applications"
-                onSelect={handleApplicationSelect}
-                selectedItem={selectedApplication}
-              />
-            )}
-          </div>
+              ) : (
+                <AppDropdown
+                  items={applications}
+                  dataType="applications"
+                  onSelect={handleApplicationSelect}
+                  selectedItem={selectedApplication}
+                />
+              )}
+            </div>
+          )}
           <div className="mb-3">
             <label htmlFor="releaseName" className="form-label">
               Release Name

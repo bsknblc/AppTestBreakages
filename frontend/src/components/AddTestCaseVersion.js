@@ -3,10 +3,10 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "../MyStyle.css";
 import AppDropdown from "./AppDropdown";
 
-const AddTestCaseVersion = ({ onAdded }) => {
+const AddTestCaseVersion = ({ onAdded, testCase }) => {
   const [formData, setFormData] = useState({
     testCaseVersionName: "",
-    testCaseId: null,
+    testCaseId: testCase || null,
   });
   const [selectedTestCase, setSelectedTestCase] = useState(null);
   const [error, setError] = useState(null);
@@ -16,22 +16,24 @@ const AddTestCaseVersion = ({ onAdded }) => {
   const [loadingTestCases, setLoadingTestCases] = useState(true);
 
   useEffect(() => {
-    const fetchTestCases = async () => {
-      try {
-        const response = await fetch("http://localhost:3000/api/test_cases");
-        if (!response.ok) {
-          throw new Error("Failed to fetch test_cases");
+    if (testCase === null) {
+      const fetchTestCases = async () => {
+        try {
+          const response = await fetch("http://localhost:3000/api/test_cases");
+          if (!response.ok) {
+            throw new Error("Failed to fetch test_cases");
+          }
+          const data = await response.json();
+          setTestCases(data);
+        } catch (err) {
+          setError(err.message);
+        } finally {
+          setLoadingTestCases(false);
         }
-        const data = await response.json();
-        setTestCases(data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoadingTestCases(false);
-      }
-    };
+      };
 
-    fetchTestCases();
+      fetchTestCases();
+    }
   }, []);
 
   const handleChange = (e) => {
@@ -73,8 +75,10 @@ const AddTestCaseVersion = ({ onAdded }) => {
       }
 
       onAdded();
-      setFormData({ testCaseVersionName: "", testCaseId: null });
-      setSelectedTestCase(null);
+      setFormData({ testCaseVersionName: "", testCaseId: testCase || null });
+      if (testCase === null) {
+        setSelectedTestCase(null);
+      }
       setSuccess(true);
       setTimeout(() => setSuccess(false), 3000);
     } catch (err) {
@@ -98,25 +102,27 @@ const AddTestCaseVersion = ({ onAdded }) => {
         )}
 
         <form onSubmit={handleSubmit}>
-          <div className="mb-3">
-            <label htmlFor="testCaseId" className="form-label">
-              Test Case
-            </label>
-            {loadingTestCases ? (
-              <div className="d-flex justify-content-center">
-                <div className="spinner-border" role="status">
-                  <span className="visually-hidden">Loading...</span>
+          {!testCase && (
+            <div className="mb-3">
+              <label htmlFor="testCaseId" className="form-label">
+                Test Case
+              </label>
+              {loadingTestCases ? (
+                <div className="d-flex justify-content-center">
+                  <div className="spinner-border" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                  </div>
                 </div>
-              </div>
-            ) : (
-              <AppDropdown
-                items={testCases}
-                dataType="test_cases"
-                onSelect={handleTestCaseSelect}
-                selectedItem={selectedTestCase}
-              />
-            )}
-          </div>
+              ) : (
+                <AppDropdown
+                  items={testCases}
+                  dataType="test_cases"
+                  onSelect={handleTestCaseSelect}
+                  selectedItem={selectedTestCase}
+                />
+              )}
+            </div>
+          )}
           <div className="mb-3">
             <label htmlFor="testCaseVersionName" className="form-label">
               Test Case Version Name

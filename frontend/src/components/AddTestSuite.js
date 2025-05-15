@@ -3,10 +3,10 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "../MyStyle.css";
 import AppDropdown from "./AppDropdown";
 
-const AddTestSuite = ({ onAdded }) => {
+const AddTestSuite = ({ onAdded, application }) => {
   const [formData, setFormData] = useState({
     testSuiteName: "",
-    applicationId: null,
+    applicationId: application || null,
   });
   const [selectedApplication, setSelectedApplication] = useState(null);
   const [error, setError] = useState(null);
@@ -16,22 +16,26 @@ const AddTestSuite = ({ onAdded }) => {
   const [loadingApps, setLoadingApps] = useState(true);
 
   useEffect(() => {
-    const fetchApplications = async () => {
-      try {
-        const response = await fetch("http://localhost:3000/api/applications");
-        if (!response.ok) {
-          throw new Error("Failed to fetch applications");
+    if (application === null) {
+      const fetchApplications = async () => {
+        try {
+          const response = await fetch(
+            "http://localhost:3000/api/applications"
+          );
+          if (!response.ok) {
+            throw new Error("Failed to fetch applications");
+          }
+          const data = await response.json();
+          setApplications(data);
+        } catch (err) {
+          setError(err.message);
+        } finally {
+          setLoadingApps(false);
         }
-        const data = await response.json();
-        setApplications(data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoadingApps(false);
-      }
-    };
+      };
 
-    fetchApplications();
+      fetchApplications();
+    }
   }, []);
 
   const handleChange = (e) => {
@@ -70,8 +74,10 @@ const AddTestSuite = ({ onAdded }) => {
       }
 
       onAdded();
-      setFormData({ testSuiteName: "", applicationId: null });
-      setSelectedApplication(null);
+      setFormData({ testSuiteName: "", applicationId: application || null });
+      if (application === null) {
+        setSelectedApplication(null);
+      }
       setSuccess(true);
       setTimeout(() => setSuccess(false), 3000);
     } catch (err) {
