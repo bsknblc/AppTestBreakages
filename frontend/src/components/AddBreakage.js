@@ -5,7 +5,9 @@ import AppDropdown from "./AppDropdown";
 
 const AddBreakage = ({ onAdded, testCaseVersion, appRelease }) => {
   const [formData, setFormData] = useState({
-    taxonomyDescription: "",
+    description: "",
+    line: "",
+    explanation: "",
     testCaseVersionId: testCaseVersion || null,
     appReleaseId: appRelease || null,
     breakageReasonId: null,
@@ -103,7 +105,9 @@ const AddBreakage = ({ onAdded, testCaseVersion, appRelease }) => {
 
       onAdded();
       setFormData({
-        taxonomyDescription: "",
+        description: "",
+        line: "",
+        explanation: "",
         testCaseVersionId: testCaseVersion || null,
         appReleaseId: appRelease || null,
         breakageReasonId: null,
@@ -245,15 +249,43 @@ const AddBreakage = ({ onAdded, testCaseVersion, appRelease }) => {
             )}
           </div>
           <div className="mb-3">
-            <label htmlFor="taxonomyDescription" className="form-label">
-              Taxonomy Description
+            <label htmlFor="description" className="form-label">
+              Description
             </label>
             <input
               type="text"
               className="form-control"
-              id="taxonomyDescription"
-              name="taxonomyDescription"
-              value={formData.taxonomyDescription}
+              id="description"
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="mb-3">
+            <label htmlFor="line" className="form-label">
+              Error Line
+            </label>
+            <input
+              type="text"
+              className="form-control"
+              id="line"
+              name="line"
+              value={formData.line}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="mb-3">
+            <label htmlFor="explanation" className="form-label">
+              Explanation
+            </label>
+            <input
+              type="text"
+              className="form-control"
+              id="explanation"
+              name="explanation"
+              value={formData.explanation}
               onChange={handleChange}
               required
             />

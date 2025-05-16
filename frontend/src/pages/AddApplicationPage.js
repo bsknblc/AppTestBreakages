@@ -8,6 +8,7 @@ import AddBreakage from "../components/AddBreakage";
 import AddRepair from "../components/AddRepair";
 import AddLocatingMethod from "../components/AddLocatingMethod";
 import AddBreakageReason from "../components/AddBreakageReason";
+import AddLanguage from "../components/AddLanguage";
 
 const AddApplicationPage = () => {
   const navigate = useNavigate();
@@ -34,6 +35,7 @@ const AddApplicationPage = () => {
       <AddRepair onAdded={handleAdd} />
       <AddLocatingMethod onAdded={handleAdd} />
       <AddBreakageReason onAdded={handleAdd} />
+      <AddLanguage onAdded={handleAdd} />
     </div>
   );
 };

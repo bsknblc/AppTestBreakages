@@ -21,7 +21,7 @@ const AppDropdown = ({ items, dataType, onSelect, selectedItem }) => {
       case "locating_methods":
         return item.locatingMethodName || item.id;
       case "breakages":
-        return item.taxonomyDescription || item.id;
+        return item.description || item.id;
       case "repairs":
         return item.commitHash || item.id;
       default:

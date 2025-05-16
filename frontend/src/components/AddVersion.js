@@ -16,7 +16,7 @@ const AddVersion = ({ onAdded, application }) => {
   const [loadingApps, setLoadingApps] = useState(true);
 
   useEffect(() => {
-    if (application === null) {
+    if (!application) {
       const fetchApplications = async () => {
         try {
           const response = await fetch(

@@ -84,7 +84,7 @@ function ApplicationCard({ app }) {
                                                                     >
                                                                       <small>
                                                                         {
-                                                                          breakage.taxonomyDescription
+                                                                          breakage.description
                                                                         }
                                                                       </small>
                                                                     </li>

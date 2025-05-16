@@ -16,7 +16,7 @@ const AddTestCaseVersion = ({ onAdded, testCase }) => {
   const [loadingTestCases, setLoadingTestCases] = useState(true);
 
   useEffect(() => {
-    if (testCase === null) {
+    if (!testCase) {
       const fetchTestCases = async () => {
         try {
           const response = await fetch("http://localhost:3000/api/test_cases");

@@ -17,7 +17,7 @@ const AddTestCase = ({ onAdded, testSuite }) => {
   const [loadingSuites, setLoadingSuites] = useState(true);
 
   useEffect(() => {
-    if (testSuite === null) {
+    if (!testSuite) {
       const fetchTestSuites = async () => {
         try {
           const response = await fetch("http://localhost:3000/api/test_suites");

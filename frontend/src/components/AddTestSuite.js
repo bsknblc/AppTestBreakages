@@ -16,7 +16,7 @@ const AddTestSuite = ({ onAdded, application }) => {
   const [loadingApps, setLoadingApps] = useState(true);
 
   useEffect(() => {
-    if (application === null) {
+    if (!application) {
       const fetchApplications = async () => {
         try {
           const response = await fetch(
@@ -99,27 +99,28 @@ const AddTestSuite = ({ onAdded, application }) => {
             Test Suite added successfully!
           </div>
         )}
-
         <form onSubmit={handleSubmit}>
-          <div className="mb-3">
-            <label htmlFor="applicationId" className="form-label">
-              Application
-            </label>
-            {loadingApps ? (
-              <div className="d-flex justify-content-center">
-                <div className="spinner-border" role="status">
-                  <span className="visually-hidden">Loading...</span>
+          {!application && (
+            <div className="mb-3">
+              <label htmlFor="applicationId" className="form-label">
+                Application
+              </label>
+              {loadingApps ? (
+                <div className="d-flex justify-content-center">
+                  <div className="spinner-border" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                  </div>
                 </div>
-              </div>
-            ) : (
-              <AppDropdown
-                items={applications}
-                dataType="applications"
-                onSelect={handleApplicationSelect}
-                selectedItem={selectedApplication}
-              />
-            )}
-          </div>
+              ) : (
+                <AppDropdown
+                  items={applications}
+                  dataType="applications"
+                  onSelect={handleApplicationSelect}
+                  selectedItem={selectedApplication}
+                />
+              )}
+            </div>
+          )}
           <div className="mb-3">
             <label htmlFor="testSuiteName" className="form-label">
               Test Suite Name

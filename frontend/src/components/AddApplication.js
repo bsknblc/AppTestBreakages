@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../MyStyle.css";
 
@@ -6,16 +6,66 @@ const AddApplication = ({ onAdded }) => {
   const [formData, setFormData] = useState({
     appName: "",
     url: "",
+    languages: [], // Stores selected language objects
   });
+  const [allLanguages, setAllLanguages] = useState([]);
+  const [selectedLanguageId, setSelectedLanguageId] = useState("");
   const [error, setError] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [loadingLanguages, setLoadingLanguages] = useState(true);
+
+  // Fetch all available languages
+  useEffect(() => {
+    const fetchLanguages = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/api/languages");
+        if (!response.ok) {
+          throw new Error("Failed to fetch languages");
+        }
+        const data = await response.json();
+        setAllLanguages(data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoadingLanguages(false);
+      }
+    };
+
+    fetchLanguages();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
       [name]: value,
+    }));
+  };
+
+  const handleAddLanguage = () => {
+    if (!selectedLanguageId) return;
+
+    const languageToAdd = allLanguages.find(
+      (lang) => lang.id === parseInt(selectedLanguageId)
+    );
+
+    if (
+      languageToAdd &&
+      !formData.languages.some((lang) => lang.id === languageToAdd.id)
+    ) {
+      setFormData((prev) => ({
+        ...prev,
+        languages: [...prev.languages, languageToAdd],
+      }));
+      setSelectedLanguageId(""); // Reset selection
+    }
+  };
+
+  const removeLanguage = (languageId) => {
+    setFormData((prev) => ({
+      ...prev,
+      languages: prev.languages.filter((lang) => lang.id !== languageId),
     }));
   };
 
@@ -31,7 +81,11 @@ const AddApplication = ({ onAdded }) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          appName: formData.appName,
+          url: formData.url,
+          languages: formData.languages,
+        }),
       });
 
       if (!response.ok) {
@@ -40,7 +94,7 @@ const AddApplication = ({ onAdded }) => {
 
       const newApplication = await response.json();
       onAdded(newApplication);
-      setFormData({ appName: "", url: "" });
+      setFormData({ appName: "", url: "", languages: [] });
       setSuccess(true);
       setTimeout(() => setSuccess(false), 3000);
     } catch (err) {
@@ -92,6 +146,66 @@ const AddApplication = ({ onAdded }) => {
               required
             />
           </div>
+
+          {/* Language Selection */}
+          <div className="mb-3">
+            <label className="form-label">Languages</label>
+            {loadingLanguages ? (
+              <div className="spinner-border spinner-border-sm" role="status">
+                <span className="visually-hidden">Loading...</span>
+              </div>
+            ) : (
+              <>
+                <div className="d-flex gap-2 mb-2">
+                  <select
+                    className="form-select"
+                    value={selectedLanguageId}
+                    onChange={(e) => setSelectedLanguageId(e.target.value)}
+                  >
+                    <option value="">Select a language</option>
+                    {allLanguages
+                      .filter(
+                        (lang) =>
+                          !formData.languages.some((l) => l.id === lang.id)
+                      )
+                      .map((language) => (
+                        <option key={language.id} value={language.id}>
+                          {language.languageName}
+                        </option>
+                      ))}
+                  </select>
+                  <button
+                    type="button"
+                    className="btn btn-outline-primary"
+                    onClick={handleAddLanguage}
+                    disabled={!selectedLanguageId}
+                  >
+                    Add
+                  </button>
+                </div>
+
+                {/* Selected Languages */}
+                <div className="d-flex flex-wrap gap-2">
+                  {formData.languages.map((language) => (
+                    <div
+                      key={language.id}
+                      className="badge bg-primary p-2 d-flex align-items-center"
+                    >
+                      {language.languageName}
+                      <button
+                        type="button"
+                        className="btn-close btn-close-white ms-2"
+                        aria-label="Remove"
+                        onClick={() => removeLanguage(language.id)}
+                        style={{ fontSize: "0.5rem" }}
+                      />
+                    </div>
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
+
           <button
             type="submit"
             className="btn btn-primary"
