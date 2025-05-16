@@ -3,10 +3,10 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "../MyStyle.css";
 import AppDropdown from "./AppDropdown";
 
-const AddRepair = ({ onAdded }) => {
+const AddRepair = ({ onAdded, breakage }) => {
   const [formData, setFormData] = useState({
     commitHash: "",
-    breakageId: null,
+    breakageId: breakage || null,
   });
   const [selectedBreakage, setSelectedBreakage] = useState(null);
   const [error, setError] = useState(null);
@@ -16,22 +16,24 @@ const AddRepair = ({ onAdded }) => {
   const [loadingBreakages, setLoadingBreakages] = useState(true);
 
   useEffect(() => {
-    const fetchBreakages = async () => {
-      try {
-        const response = await fetch("http://localhost:3000/api/breakages");
-        if (!response.ok) {
-          throw new Error("Failed to fetch breakages");
+    if (!breakage) {
+      const fetchBreakages = async () => {
+        try {
+          const response = await fetch("http://localhost:3000/api/breakages");
+          if (!response.ok) {
+            throw new Error("Failed to fetch breakages");
+          }
+          const data = await response.json();
+          setBreakages(data);
+        } catch (err) {
+          setError(err.message);
+        } finally {
+          setLoadingBreakages(false);
         }
-        const data = await response.json();
-        setBreakages(data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoadingBreakages(false);
-      }
-    };
+      };
 
-    fetchBreakages();
+      fetchBreakages();
+    }
   }, []);
 
   const handleChange = (e) => {
@@ -42,7 +44,7 @@ const AddRepair = ({ onAdded }) => {
     }));
   };
 
-  const handleBreakageSelect = (selectedItem) => {
+  const handleBrekageSelect = (selectedItem) => {
     setSelectedBreakage(selectedItem);
     setFormData((prev) => ({
       ...prev,
@@ -66,12 +68,14 @@ const AddRepair = ({ onAdded }) => {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to add repair");
+        throw new Error("Failed to add repairs");
       }
 
       onAdded();
-      setFormData({ commitHash: "", breakageId: null });
-      setSelectedBreakage(null);
+      setFormData({ commitHash: "", breakageId: breakage || null });
+      if (breakage === null) {
+        setSelectedBreakage(null);
+      }
       setSuccess(true);
       setTimeout(() => setSuccess(false), 3000);
     } catch (err) {
@@ -84,36 +88,36 @@ const AddRepair = ({ onAdded }) => {
   return (
     <div className="card">
       <div className="card-header bg-primary text-white">
-        <h3 className="mb-0">Add Repair</h3>
+        <h3 className="mb-0">Add New Repair</h3>
       </div>
       <div className="card-body">
         {error && <div className="alert alert-danger">{error}</div>}
         {success && (
-          <div className="alert alert-success">
-            App Version added successfully!
-          </div>
+          <div className="alert alert-success">Repair added successfully!</div>
         )}
 
         <form onSubmit={handleSubmit}>
-          <div className="mb-3">
-            <label htmlFor="breakageId" className="form-label">
-              Breakage
-            </label>
-            {loadingBreakages ? (
-              <div className="d-flex justify-content-center">
-                <div className="spinner-border" role="status">
-                  <span className="visually-hidden">Loading...</span>
+          {!breakage && (
+            <div className="mb-3">
+              <label htmlFor="breakageId" className="form-label">
+                Breakage
+              </label>
+              {loadingBreakages ? (
+                <div className="d-flex justify-content-center">
+                  <div className="spinner-border" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                  </div>
                 </div>
-              </div>
-            ) : (
-              <AppDropdown
-                items={breakages}
-                dataType="breakages"
-                onSelect={handleBreakageSelect}
-                selectedItem={selectedBreakage}
-              />
-            )}
-          </div>
+              ) : (
+                <AppDropdown
+                  items={breakages}
+                  dataType="breakages"
+                  onSelect={handleBrekageSelect}
+                  selectedItem={selectedBreakage}
+                />
+              )}
+            </div>
+          )}
           <div className="mb-3">
             <label htmlFor="commitHash" className="form-label">
               Commit Hash

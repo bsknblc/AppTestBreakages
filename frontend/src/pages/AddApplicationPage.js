@@ -26,6 +26,7 @@ const AddApplicationPage = () => {
       >
         ← Back to Applications
       </button>
+      <AddLanguage onAdded={handleAdd} />
       <AddApplication onAdded={handleAdd} />
       <AddVersion onAdded={handleAdd} />
       <AddTestSuite onAdded={handleAdd} />
@@ -35,7 +36,6 @@ const AddApplicationPage = () => {
       <AddRepair onAdded={handleAdd} />
       <AddLocatingMethod onAdded={handleAdd} />
       <AddBreakageReason onAdded={handleAdd} />
-      <AddLanguage onAdded={handleAdd} />
     </div>
   );
 };

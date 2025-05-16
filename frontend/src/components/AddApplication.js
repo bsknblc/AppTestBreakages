@@ -161,6 +161,7 @@ const AddApplication = ({ onAdded }) => {
                     className="form-select"
                     value={selectedLanguageId}
                     onChange={(e) => setSelectedLanguageId(e.target.value)}
+                    onClick={handleAddLanguage}
                   >
                     <option value="">Select a language</option>
                     {allLanguages
@@ -174,14 +175,6 @@ const AddApplication = ({ onAdded }) => {
                         </option>
                       ))}
                   </select>
-                  <button
-                    type="button"
-                    className="btn btn-outline-primary"
-                    onClick={handleAddLanguage}
-                    disabled={!selectedLanguageId}
-                  >
-                    Add
-                  </button>
                 </div>
 
                 {/* Selected Languages */}

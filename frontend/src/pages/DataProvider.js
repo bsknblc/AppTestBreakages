@@ -6,6 +6,10 @@ import AddVersion from "../components/AddVersion";
 import AddTestSuite from "../components/AddTestSuite";
 import AddTestCase from "../components/AddTestCase";
 import AddTestCaseVersion from "../components/AddTestCaseVersion";
+import AddRepair from "../components/AddRepair";
+import AddLanguage from "../components/AddLanguage";
+import AddBreakageReason from "../components/AddBreakageReason";
+import AddLocatingMethod from "../components/AddLocatingMethod";
 
 const DataProvider = () => {
   const [dataType, setDataType] = useState("applications");
@@ -15,6 +19,10 @@ const DataProvider = () => {
   const [selectedApp, setSelectedApp] = useState(null);
   const [applicationsData, setApplicationsData] = useState([]);
   const [addApp, setAddApp] = useState(false);
+
+  const [addLanguage, setAddLanguage] = useState(null);
+  const [addBreakageReason, setAddBreakageReason] = useState(null);
+  const [addLocatingMethod, setAddLocatingMethod] = useState(null);
 
   const [selectedRelease, setSelectedRelease] = useState(null);
   const [releasesData, setReleasesData] = useState([]);
@@ -40,7 +48,12 @@ const DataProvider = () => {
   const [selectedBreakage, setSelectedBreakage] = useState(null);
   const [breakagesData, setBreakagesData] = useState([]);
   const [addBreakage, setAddBreakage] = useState(false);
-  const [showBreakageAdd, setShowBreakageAdd] = useState(false);
+  const [showBreakageDropdown, setShowBreakageDropdown] = useState(false);
+
+  const [selectedRepair, setSelectedRepair] = useState(null);
+  const [repairData, setRepairData] = useState([]);
+  const [addRepair, setAddRepair] = useState(false);
+  const [showRepairAdd, setShowRepairAdd] = useState(false);
 
   const fetchData = async () => {
     try {
@@ -65,6 +78,9 @@ const DataProvider = () => {
           break;
         case "breakages":
           endpoint = `http://localhost:3000/api/test_case_versions/${selectedTestCaseVersion?.id}/breakages`;
+          break;
+        case "repairs":
+          endpoint = `http://localhost:3000/api/breakages/${selectedBreakage?.id}/repairs`;
           break;
         default:
           endpoint = "http://localhost:3000/api/applications";
@@ -95,6 +111,9 @@ const DataProvider = () => {
         case "breakages":
           setBreakagesData(result);
           break;
+        case "repairs":
+          setRepairData(result);
+          break;
         default:
           setApplicationsData(result);
           break;
@@ -116,6 +135,7 @@ const DataProvider = () => {
     selectedTestCase?.id,
     selectedTestCaseVersion?.id,
     selectedBreakage?.id,
+    selectedRepair?.id,
   ]); // Add dependencies
 
   const handleAppSelect = (item) => {
@@ -126,10 +146,12 @@ const DataProvider = () => {
     setSelectedTestSuite(null);
     setSelectedTestCase(null);
     setSelectedTestCaseVersion(null);
+    setSelectedBreakage(null);
     setShowTestSuiteDropdown(false);
     setShowTestCaseDropdown(false);
     setShowTestCaseVersionDropdown(false);
-    setShowBreakageAdd(false);
+    setShowBreakageDropdown(false);
+    setShowRepairAdd(false);
   };
 
   const handleReleaseSelect = (item) => {
@@ -140,9 +162,12 @@ const DataProvider = () => {
     setSelectedTestSuite(null);
     setSelectedTestCase(null);
     setSelectedTestCaseVersion(null);
+    setSelectedBreakage(null);
+    setSelectedRepair(null);
     setShowTestCaseDropdown(false);
     setShowTestCaseVersionDropdown(false);
-    setShowBreakageAdd(false);
+    setShowBreakageDropdown(false);
+    setShowRepairAdd(false);
   };
 
   const handleTestSuiteSelect = (item) => {
@@ -152,28 +177,44 @@ const DataProvider = () => {
     // Reset downstream selections
     setSelectedTestCase(null);
     setSelectedTestCaseVersion(null);
+    setSelectedBreakage(null);
+    setSelectedRepair(null);
     setShowTestCaseVersionDropdown(false);
-    setShowBreakageAdd(false);
+    setShowBreakageDropdown(false);
+    setShowRepairAdd(false);
   };
 
   const handleTestCaseSelect = (item) => {
     setSelectedTestCase(item);
     setDataType("test_case_versions");
     setShowTestCaseVersionDropdown(true);
-    // Reset downstream selections
+    // TODO: add tc version açıkken test case değişince ad tcv deki id sanırım değişmiyor
     setSelectedTestCaseVersion(null);
-    setShowBreakageAdd(false);
+    setSelectedBreakage(null);
+    setSelectedRepair(null);
+    setShowBreakageDropdown(false);
+    setShowRepairAdd(false);
   };
 
   const handleTestCaseVersionSelect = (item) => {
     setSelectedTestCaseVersion(item);
     setDataType("breakages");
-    setShowBreakageAdd(true);
+    setShowBreakageDropdown(true);
+    setSelectedBreakage(null);
+    setSelectedRepair(null);
+    setShowRepairAdd(false);
   };
 
   const handleBreakageSelect = (item) => {
     setSelectedBreakage(item);
     setDataType("repairs");
+    setShowRepairAdd(true);
+  };
+
+  const handleRepairSelect = (item) => {
+    setSelectedRepair(item);
+    setDataType("repairs");
+    setShowRepairAdd(true);
   };
 
   const refreshData = (type = "applications") => {
@@ -202,6 +243,12 @@ const DataProvider = () => {
           >
             + Add Application
           </button>
+          <button
+            className="btn btn-success btn-sm"
+            onClick={() => setAddLanguage((prev) => !prev)}
+          >
+            + Add Language
+          </button>
           {addApp && (
             <div className="mt-3">
               <AddApplication
@@ -210,6 +257,16 @@ const DataProvider = () => {
                   refreshData("applications");
                 }}
                 onCancel={() => setAddApp(false)}
+              />
+            </div>
+          )}
+          {addLanguage && (
+            <div className="mt-3">
+              <AddLanguage
+                onAdded={() => {
+                  setAddLanguage(false);
+                }}
+                onCancel={() => setAddLanguage(false)}
               />
             </div>
           )}
@@ -331,7 +388,7 @@ const DataProvider = () => {
                 className="btn btn-success btn-sm"
                 onClick={() => setAddTestCaseVersion((prev) => !prev)}
               >
-                + Add Test Case
+                + Add Test Case Version
               </button>
               {addTestCaseVersion && (
                 <div className="mt-3">
@@ -348,7 +405,7 @@ const DataProvider = () => {
             </>
           )}
 
-          {showBreakageAdd && (
+          {showBreakageDropdown && (
             <>
               <div className="d-flex align-items-center mb-3">
                 <h4 className="mt-4">
@@ -367,6 +424,18 @@ const DataProvider = () => {
               >
                 + Add Breakage
               </button>
+              <button
+                className="btn btn-success btn-sm"
+                onClick={() => setAddBreakageReason((prev) => !prev)}
+              >
+                + Add Breakage Reason
+              </button>
+              <button
+                className="btn btn-success btn-sm"
+                onClick={() => setAddLocatingMethod((prev) => !prev)}
+              >
+                + Add Locathing Method
+              </button>
               {addBreakage && (
                 <div className="mt-3">
                   <AddBreakage
@@ -377,6 +446,60 @@ const DataProvider = () => {
                     testCaseVersion={selectedTestCaseVersion?.id}
                     appRelease={selectedRelease?.id}
                     onCancel={() => setAddTestCaseVersion(false)}
+                  />
+                </div>
+              )}
+              {addBreakageReason && (
+                <div className="mt-3">
+                  <AddBreakageReason
+                    onAdded={() => {
+                      setAddBreakageReason(false);
+                    }}
+                    onCancel={() => setAddBreakageReason(false)}
+                  />
+                </div>
+              )}
+              {addLocatingMethod && (
+                <div className="mt-3">
+                  <AddLocatingMethod
+                    onAdded={() => {
+                      setAddLocatingMethod(false);
+                    }}
+                    onCancel={() => setAddLocatingMethod(false)}
+                  />
+                </div>
+              )}
+            </>
+          )}
+
+          {showRepairAdd && (
+            <>
+              <div className="d-flex align-items-center mb-3">
+                <h4 className="mt-4">
+                  Repair for {selectedBreakage?.description}
+                </h4>
+              </div>
+              <AppDropdown
+                items={repairData}
+                dataType="repairs"
+                onSelect={handleRepairSelect}
+                selectedItem={selectedRepair}
+              />
+              <button
+                className="btn btn-success btn-sm"
+                onClick={() => setAddRepair((prev) => !prev)}
+              >
+                + Add Repair
+              </button>
+              {addRepair && (
+                <div className="mt-3">
+                  <AddRepair
+                    onAdded={() => {
+                      setAddRepair(false);
+                      refreshData("repairs");
+                    }}
+                    breakage={selectedBreakage?.id}
+                    onCancel={() => setAddRepair(false)}
                   />
                 </div>
               )}
