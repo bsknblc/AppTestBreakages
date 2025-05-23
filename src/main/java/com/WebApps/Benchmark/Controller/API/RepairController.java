@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/repair_a_line_of_codes")
+@RequestMapping("/api/repairs")
 public class RepairController {
 
     private final RepairService repairService;

@@ -3,8 +3,6 @@ package com.WebApps.Benchmark.Mapper;
 import com.WebApps.Benchmark.DTO.TestCaseDTO;
 import com.WebApps.Benchmark.DTO.TestCaseVersionDTO;
 import com.WebApps.Benchmark.Model.TestCase;
-import com.WebApps.Benchmark.Model.TestCaseVersion;
-import com.WebApps.Benchmark.Model.TestSuite;
 
 import java.util.ArrayList;
 import java.util.List;

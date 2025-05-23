@@ -1,28 +1,34 @@
 package com.WebApps.Benchmark.DTO;
 
+import com.WebApps.Benchmark.Model.BreakageExplanation;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class BreakageDTO {
 
     private int id;
-    private int appReleaseID;
-    private int testCaseVersionID;
-    private int breakageReasonID;
-    private int locatingMethodID;
+    private int appReleaseId;
+    private int testCaseVersionId;
+    private int breakageReasonId;
+    private int locatingMethodId;
     private List<RepairDTO> repairs = new ArrayList<>();
-    private String taxonomyDescription;
+    private String description;
+    private String line;
+    private List<BreakageExplanationDTO> breakageExplanations = new ArrayList<>();
 
     public BreakageDTO() {}
 
-    public BreakageDTO(int id, int appReleaseID, int testCaseVersionID, int breakageReasonID, int locatingMethodID, List<RepairDTO> repairs, String taxonomyDescription) {
+    public BreakageDTO(int id, int appReleaseId, int testCaseVersionId, int breakageReasonId, int locatingMethodId, List<RepairDTO> repairs, String description, String line, List<BreakageExplanationDTO> breakageExplanations) {
         this.id = id;
-        this.appReleaseID = appReleaseID;
-        this.testCaseVersionID = testCaseVersionID;
-        this.breakageReasonID = breakageReasonID;
-        this.locatingMethodID = locatingMethodID;
+        this.appReleaseId = appReleaseId;
+        this.testCaseVersionId = testCaseVersionId;
+        this.breakageReasonId = breakageReasonId;
+        this.locatingMethodId = locatingMethodId;
         this.repairs = repairs;
-        this.taxonomyDescription = taxonomyDescription;
+        this.description = description;
+        this.line = line;
+        this.breakageExplanations = breakageExplanations;
     }
 
     public int getId() {
@@ -33,20 +39,20 @@ public class BreakageDTO {
         this.id = id;
     }
 
-    public int getAppRelease() {
-        return appReleaseID;
+    public int getAppReleaseId() {
+        return appReleaseId;
     }
 
-    public void setAppRelease(int appReleaseID) {
-        this.appReleaseID = appReleaseID;
+    public void setAppReleaseId(int appReleaseId) {
+        this.appReleaseId = appReleaseId;
     }
 
-    public int getTestCaseVersion() {
-        return testCaseVersionID;
+    public int getTestCaseVersionId() {
+        return testCaseVersionId;
     }
 
-    public void setTestCaseVersion(int testCaseVersionID) {
-        this.testCaseVersionID = testCaseVersionID;
+    public void setTestCaseVersionId(int testCaseVersionId) {
+        this.testCaseVersionId = testCaseVersionId;
     }
 
     public List<RepairDTO> getRepairs() {
@@ -57,27 +63,43 @@ public class BreakageDTO {
         this.repairs = repairs;
     }
 
-    public String getTaxonomyDescription() {
-        return taxonomyDescription;
+    public String getDescription() {
+        return description;
     }
 
-    public void setTaxonomyDescription(String taxonomyDescription) {
-        this.taxonomyDescription = taxonomyDescription;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public int getLocatingMethodID() {
-        return locatingMethodID;
+    public int getLocatingMethodId() {
+        return locatingMethodId;
     }
 
-    public void setLocatingMethodID(int locatingMethodID) {
-        this.locatingMethodID = locatingMethodID;
+    public void setLocatingMethodId(int locatingMethodId) {
+        this.locatingMethodId = locatingMethodId;
     }
 
-    public int getBreakageReasonID() {
-        return breakageReasonID;
+    public int getBreakageReasonId() {
+        return breakageReasonId;
     }
 
-    public void setBreakageReasonID(int breakageReasonID) {
-        this.breakageReasonID = breakageReasonID;
+    public void setBreakageReasonId(int breakageReasonId) {
+        this.breakageReasonId = breakageReasonId;
+    }
+
+    public List<BreakageExplanationDTO> getBreakageExplanations() {
+        return breakageExplanations;
+    }
+
+    public void setBreakageExplanations(List<BreakageExplanationDTO> breakageExplanations) {
+        this.breakageExplanations = breakageExplanations;
+    }
+
+    public String getLine() {
+        return line;
+    }
+
+    public void setLine(String line) {
+        this.line = line;
     }
 }

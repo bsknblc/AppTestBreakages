@@ -1,0 +1,151 @@
+
+.admin-panel {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.admin-panel h1 {
+    color: #2c3e50;
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 10px;
+    margin-bottom: 30px;
+}
+
+.admin-panel h2,
+.admin-panel h3,
+.admin-panel h4,
+.admin-panel h5,
+.admin-panel h6 {
+    color: #34495e;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+/* Card styling */
+.application-card,
+.release-card,
+.test-suite-card,
+.test-case-card,
+.version-card,
+.breakage-card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+.application-card {
+    background: #f8f9fa;
+    border-left: 4px solid #3498db;
+}
+
+.release-card {
+    border-left: 4px solid #2ecc71;
+    margin-left: 20px;
+}
+
+.test-suite-card {
+    border-left: 4px solid #e74c3c;
+    margin-left: 20px;
+}
+
+.test-case-card {
+    border-left: 4px solid #f39c12;
+    margin-left: 40px;
+}
+
+.version-card {
+    border-left: 4px solid #9b59b6;
+    margin-left: 60px;
+}
+
+.breakage-card {
+    background: #fff8f8;
+    border-left: 4px solid #e74c3c;
+    margin-left: 20px;
+    font-size: 0.9em;
+}
+
+/* Spacing and indentation for hierarchy */
+.releases-section,
+.test-suites-section {
+    margin-top: 20px;
+}
+
+.test-cases-section {
+    margin-left: 20px;
+}
+
+.test-case-versions-section {
+    margin-left: 20px;
+}
+
+/* Link styling */
+.admin-panel a {
+    color: #3498db;
+    text-decoration: none;
+}
+
+.admin-panel a:hover {
+    text-decoration: underline;
+}
+
+/* Status messages */
+.loading, .error {
+    padding: 20px;
+    text-align: center;
+    font-size: 1.2em;
+}
+
+.loading {
+    color: #3498db;
+}
+
+.error {
+    color: #e74c3c;
+}
+
+.add-application-form {
+    margin-bottom: 2rem;
+    padding: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+button[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button[type="submit"]:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+.error-message {
+    color: red;
+    margin-bottom: 1rem;
+}

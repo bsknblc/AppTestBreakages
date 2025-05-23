@@ -33,6 +33,13 @@ public class TestCaseService {
         return TestCaseMapper.toDTO(testCase);
     }
 
+    public List<TestCaseDTO> findByTestSuiteId(int testSuiteId){
+        List<TestCase> testCases = testCaseRepository.findByTestSuiteId(testSuiteId);
+        return testCases.stream()
+                .map(TestCaseMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
     public TestCaseDTO save(TestCaseDTO testCaseDTO) {
         TestCase testCase = new TestCase();
         testCase.setTestCaseName(testCaseDTO.getTestCaseName());

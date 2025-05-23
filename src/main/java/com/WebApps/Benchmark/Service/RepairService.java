@@ -14,9 +14,11 @@ public class RepairService {
 
     private final RepairRepository repairRepository;
     private final BreakageRepository breakageRepository;
-    public RepairService(RepairRepository repairRepository, BreakageRepository breakageRepository) {
+    private final RepairExplanationRepository repairExplanationRepository;
+    public RepairService(RepairRepository repairRepository, BreakageRepository breakageRepository, RepairExplanationRepository repairExplanationRepository) {
         this.repairRepository = repairRepository;
         this.breakageRepository = breakageRepository;
+        this.repairExplanationRepository = repairExplanationRepository;
     }
 
     public List<RepairDTO> findAll(){
@@ -31,9 +33,20 @@ public class RepairService {
         return RepairMapper.toDTO(repair);
     }
 
+    public List<RepairDTO> findByBreakageId(int breakageId){
+        List<Repair> repairs = repairRepository.findByBreakage_Id(breakageId);
+        return repairs.stream()
+                .map(RepairMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
     public RepairDTO save(RepairDTO repairDTO) {
         Repair repair = new Repair();
-        repair.setBreakage(breakageRepository.getReferenceById(repairDTO.getBreakageID()));
+        repair.setBreakage(breakageRepository.getReferenceById(repairDTO.getBreakageId()));
+        repair.setCommitHash(repairDTO.getCommitHash());
+        repair.setRepairExplanations(repairDTO.getRepairExplanations().stream()
+                .map(dto -> repairExplanationRepository.getReferenceById(dto.getId()))
+                .collect(Collectors.toList()));
         repairRepository.save(repair);
 
         repairDTO.setId(repair.getId());

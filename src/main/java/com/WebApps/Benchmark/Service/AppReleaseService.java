@@ -32,10 +32,17 @@ public class AppReleaseService {
         return AppReleaseMapper.toDTO(appRelease);
     }
 
+    public List<AppReleaseDTO> findByApplication_Id(int applicationId){
+        List<AppRelease> appReleases = appReleaseRepository.findByApplication_Id(applicationId);
+        return appReleases.stream()
+                .map(AppReleaseMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
     public AppReleaseDTO save(AppReleaseDTO appReleaseDTO) {
         AppRelease appRelease = new AppRelease();
         appRelease.setReleaseName(appReleaseDTO.getReleaseName());
-        appRelease.setApplication(applicationRepository.getReferenceById(appReleaseDTO.getApplicationID()));
+        appRelease.setApplication(applicationRepository.getReferenceById(appReleaseDTO.getApplicationId()));
         appReleaseRepository.save(appRelease);
 
         appReleaseDTO.setId(appRelease.getId());

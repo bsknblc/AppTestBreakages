@@ -29,8 +29,17 @@ public class Breakage {
     @OneToMany(mappedBy = "breakage", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Repair> repairs = new ArrayList<>();
 
+    @ManyToMany
+    @JoinTable(
+            name = "BREAKAGE_EXPLANATION",
+            joinColumns = @JoinColumn(name = "breakage_id"),
+            inverseJoinColumns = @JoinColumn(name = "breakage_explanation_id")
+    )
+    private List<BreakageExplanation> breakageExplanations = new ArrayList<>();
+
     @ManyToOne
     @JoinColumn(name = "breakage_reason_id", nullable = false)
+    @NotNull
     private BreakageReason breakageReason;
 
     @ManyToOne
@@ -38,15 +47,23 @@ public class Breakage {
     private LocatingMethod locatingMethod;
 
     @NotNull
-    @Column(name = "TAXONOMY_DESCRIPTION")
-    private String taxonomyDescription;
+    @Column(name = "DESCRIPTION")
+    private String description;
+
+    @NotNull
+    @Column(name = "LINE")
+    private String line;
 
     public Breakage(){}
 
-    public Breakage(AppRelease appRelease, TestCaseVersion testCaseVersion, String taxonomyDescription) {
+    public Breakage(AppRelease appRelease, TestCaseVersion testCaseVersion, BreakageReason breakageReason, LocatingMethod locatingMethod, String description, String line, BreakageExplanation breakageExplanation) {
         this.appRelease = appRelease;
         this.testCaseVersion = testCaseVersion;
-        this.taxonomyDescription = taxonomyDescription;
+        this.breakageReason = breakageReason;
+        this.locatingMethod = locatingMethod;
+        this.description = description;
+        this.line = line;
+        this.breakageExplanations.add(breakageExplanation);
     }
 
     public int getId() {
@@ -77,12 +94,12 @@ public class Breakage {
         this.repairs = repairs;
     }
 
-    public String getTaxonomyDescription() {
-        return taxonomyDescription;
+    public String getDescription() {
+        return description;
     }
 
-    public void setTaxonomyDescription(String taxonomyDescription) {
-        this.taxonomyDescription = taxonomyDescription;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public LocatingMethod getLocatingMethod() {
@@ -99,5 +116,21 @@ public class Breakage {
 
     public void setBreakageReason(BreakageReason breakageReason) {
         this.breakageReason = breakageReason;
+    }
+
+    public String getLine() {
+        return line;
+    }
+
+    public void setLine(String line) {
+        this.line = line;
+    }
+
+    public List<BreakageExplanation> getBreakageExplanations() {
+        return breakageExplanations;
+    }
+
+    public void setBreakageExplanations(List<BreakageExplanation> breakageExplanations) {
+        this.breakageExplanations = breakageExplanations;
     }
 }

@@ -7,7 +7,6 @@ import com.WebApps.Benchmark.Repository.TestCaseRepository;
 import com.WebApps.Benchmark.Repository.TestCaseVersionRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,6 +30,13 @@ public class TestCaseVersionService {
     public TestCaseVersionDTO findById(int id){
         TestCaseVersion testCaseVersion = testCaseVersionRepository.getReferenceById(id);
         return TestCaseVersionMapper.toDTO(testCaseVersion);
+    }
+
+    public List<TestCaseVersionDTO> findByTestCaseId(int testCaseId){
+        List<TestCaseVersion> testCaseVersions = testCaseVersionRepository.findByTestCase_Id(testCaseId);
+        return testCaseVersions.stream()
+                .map(TestCaseVersionMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
     public TestCaseVersionDTO save(TestCaseVersionDTO testCaseVersionDTO) {
