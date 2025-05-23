@@ -2,11 +2,13 @@ import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../MyStyle.css";
 import AppDropdown from "./AppDropdown";
+import ExplanationSelector from "./ExplanationSelector";
 
 const AddRepair = ({ onAdded, breakage }) => {
   const [formData, setFormData] = useState({
     commitHash: "",
     breakageId: breakage || null,
+    repairExplanations: [],
   });
   const [selectedBreakage, setSelectedBreakage] = useState(null);
   const [error, setError] = useState(null);
@@ -52,6 +54,28 @@ const AddRepair = ({ onAdded, breakage }) => {
     }));
   };
 
+  const handleAddRepairExplanation = (explanation) => {
+    setFormData((prev) => ({
+      ...prev,
+      repairExplanations: prev.repairExplanations.some(
+        (e) => e.id === explanation.id
+      )
+        ? prev.repairExplanations
+        : [...prev.repairExplanations, explanation],
+    }));
+  };
+
+  const handleRemoveRepairExplanation = (explanation) => {
+    setFormData((prev) => ({
+      ...prev,
+      repairExplanations: prev.repairExplanations.filter((e) =>
+        e.id
+          ? e.id !== explanation.id
+          : e.explanation !== explanation.explanation
+      ),
+    }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -59,16 +83,20 @@ const AddRepair = ({ onAdded, breakage }) => {
     setSuccess(false);
 
     try {
+      const repairData = {
+        ...formData,
+        repairExplanationIds: formData.repairExplanations.map((e) => e.id),
+      };
       const response = await fetch("http://localhost:3000/api/repairs", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(repairData),
       });
 
       if (!response.ok) {
-        throw new Error("Failed to add repairs");
+        throw new Error("Failed to add repair");
       }
 
       onAdded();
@@ -132,6 +160,13 @@ const AddRepair = ({ onAdded, breakage }) => {
               required
             />
           </div>
+          <ExplanationSelector
+            label="Repair Explanations"
+            apiEndpoint="http://localhost:3000/api/repair_explanations"
+            selectedItems={formData.repairExplanations}
+            onAdd={handleAddRepairExplanation}
+            onRemove={handleRemoveRepairExplanation}
+          />
           <button
             type="submit"
             className="btn btn-primary"

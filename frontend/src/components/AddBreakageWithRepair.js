@@ -4,7 +4,7 @@ import "../MyStyle.css";
 import AppDropdown from "./AppDropdown";
 import ExplanationSelector from "./ExplanationSelector";
 
-const AddBreakage = ({ onAdded, testCaseVersion, appRelease }) => {
+const AddBreakageWithRepair = ({ onAdded, testCaseVersion, appRelease }) => {
   const [formData, setFormData] = useState({
     description: "",
     line: "",
@@ -26,6 +26,14 @@ const AddBreakage = ({ onAdded, testCaseVersion, appRelease }) => {
   const [breakageReason, setBreakageReason] = useState([]);
   const [locatingMethod, setLocatingMethod] = useState(true);
   const [loading, setLoading] = useState(true);
+
+  const [addedBreakage, setAddedBreakage] = useState(null);
+
+  const [formRepairData, setFormRepairData] = useState({
+    commitHash: "",
+    breakageId: addedBreakage || null,
+    repairExplanations: [],
+  });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -77,6 +85,14 @@ const AddBreakage = ({ onAdded, testCaseVersion, appRelease }) => {
     }));
   };
 
+  const handleRepairChange = (e) => {
+    const { name, value } = e.target;
+    setFormRepairData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
   const handleDropdownSelect = (selectedItem, fieldName, setSelectedItem) => {
     setSelectedItem(selectedItem);
     setFormData((prev) => ({
@@ -107,6 +123,28 @@ const AddBreakage = ({ onAdded, testCaseVersion, appRelease }) => {
     }));
   };
 
+  const handleAddRepairExplanation = (explanation) => {
+    setFormRepairData((prev) => ({
+      ...prev,
+      repairExplanations: prev.repairExplanations.some(
+        (e) => e.id === explanation.id
+      )
+        ? prev.repairExplanations
+        : [...prev.repairExplanations, explanation],
+    }));
+  };
+
+  const handleRemoveRepairExplanation = (explanation) => {
+    setFormRepairData((prev) => ({
+      ...prev,
+      repairExplanations: prev.repairExplanations.filter((e) =>
+        e.id
+          ? e.id !== explanation.id
+          : e.explanation !== explanation.explanation
+      ),
+    }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -114,23 +152,61 @@ const AddBreakage = ({ onAdded, testCaseVersion, appRelease }) => {
     setSuccess(false);
 
     try {
+      // First submit the breakage
       const breakageData = {
         ...formData,
         breakageExplanationIds: formData.breakageExplanations.map((e) => e.id),
       };
-      const response = await fetch("http://localhost:3000/api/breakages", {
+      const breakageResponse = await fetch(
+        "http://localhost:3000/api/breakages",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(breakageData),
+        }
+      );
+
+      if (!breakageResponse.ok) {
+        throw new Error("Failed to add breakage.");
+      }
+
+      const breakageResult = await breakageResponse.json();
+      const breakageId = breakageResult.id; // Get the ID from the response
+
+      // Update the repair data with the new breakage ID
+      setFormRepairData((prev) => ({
+        ...prev,
+        breakageId: breakageId,
+      }));
+
+      // Then submit the repair
+      const repairData = {
+        ...formRepairData,
+        breakageId: breakageId, // Use the new breakage ID
+        repairExplanationIds: formRepairData.repairExplanations.map(
+          (e) => e.id
+        ),
+      };
+
+      const repairResponse = await fetch("http://localhost:3000/api/repairs", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(breakageData),
+        body: JSON.stringify(repairData),
       });
 
-      if (!response.ok) {
-        throw new Error("Failed to add breakage.");
+      if (!repairResponse.ok) {
+        throw new Error("Failed to add repair.");
       }
 
-      onAdded(response);
+      // Update state and callbacks
+      setAddedBreakage(breakageId);
+      onAdded(breakageResult);
+
+      // Reset forms
       setFormData({
         description: "",
         line: "",
@@ -140,14 +216,19 @@ const AddBreakage = ({ onAdded, testCaseVersion, appRelease }) => {
         breakageReasonId: null,
         locatingMethodId: null,
       });
-      if (testCaseVersion === null) {
-        setSelectedTestCaseVersion(null);
-      }
-      if (appRelease === null) {
-        setSelectedAppRelease(null);
-      }
+
+      setFormRepairData({
+        commitHash: "",
+        breakageId: null,
+        repairExplanations: [],
+      });
+
+      // Reset other state
+      if (testCaseVersion === null) setSelectedTestCaseVersion(null);
+      if (appRelease === null) setSelectedAppRelease(null);
       setSelectedBreakageReason(null);
       setSelectedLocatingMethod(null);
+
       setSuccess(true);
       setTimeout(() => setSuccess(false), 3000);
     } catch (err) {
@@ -310,6 +391,29 @@ const AddBreakage = ({ onAdded, testCaseVersion, appRelease }) => {
             onAdd={handleAddBreakageExplanation}
             onRemove={handleRemoveBreakageExplanation}
           />
+
+          <div className="mb-3">
+            <label htmlFor="commitHash" className="form-label">
+              Commit Hash
+            </label>
+            <input
+              type="text"
+              className="form-control"
+              id="commitHash"
+              name="commitHash"
+              value={formRepairData.commitHash}
+              onChange={handleRepairChange}
+              required
+            />
+          </div>
+          <ExplanationSelector
+            label="Repair Explanations"
+            apiEndpoint="http://localhost:3000/api/repair_explanations"
+            selectedItems={formRepairData.repairExplanations}
+            onAdd={handleAddRepairExplanation}
+            onRemove={handleRemoveRepairExplanation}
+          />
+
           <button
             type="submit"
             className="btn btn-primary"
@@ -334,4 +438,4 @@ const AddBreakage = ({ onAdded, testCaseVersion, appRelease }) => {
   );
 };
 
-export default AddBreakage;
+export default AddBreakageWithRepair;

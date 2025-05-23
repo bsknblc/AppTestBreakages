@@ -29,6 +29,7 @@ function ApplicationCard({ app }) {
                 {app.releases.map((release) => (
                   <div key={release.id} className="list-group-item">
                     <strong>{release.releaseName}</strong>
+                    <strong> Breakage Count: {release.breakages.length}</strong>
                     {release.breakages && release.breakages.length > 0 && (
                       <div>
                         <h6>Test Suites</h6>
@@ -73,7 +74,7 @@ function ApplicationCard({ app }) {
                                                                 Breakages:
                                                               </small>
                                                               <ul className="list-unstyled ms-3">
-                                                                {release.breakages.map(
+                                                                {version.breakages.map(
                                                                   (
                                                                     breakage
                                                                   ) => (

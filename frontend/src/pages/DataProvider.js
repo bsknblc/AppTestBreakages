@@ -10,6 +10,7 @@ import AddRepair from "../components/AddRepair";
 import AddLanguage from "../components/AddLanguage";
 import AddBreakageReason from "../components/AddBreakageReason";
 import AddLocatingMethod from "../components/AddLocatingMethod";
+import AddBreakageWithRepair from "../components/AddBreakageWithRepair";
 
 const DataProvider = () => {
   const [dataType, setDataType] = useState("applications");
@@ -54,6 +55,7 @@ const DataProvider = () => {
   const [repairData, setRepairData] = useState([]);
   const [addRepair, setAddRepair] = useState(false);
   const [showRepairAdd, setShowRepairAdd] = useState(false);
+  const [addBreakageWithRepair, setAddBreakageWithRepair] = useState(false);
 
   const fetchData = async () => {
     try {
@@ -420,9 +422,9 @@ const DataProvider = () => {
               />
               <button
                 className="btn btn-success btn-sm"
-                onClick={() => setAddBreakage((prev) => !prev)}
+                onClick={() => setAddBreakageWithRepair((prev) => !prev)}
               >
-                + Add Breakage
+                + Add Breakage with Repair
               </button>
               <button
                 className="btn btn-success btn-sm"
@@ -434,21 +436,24 @@ const DataProvider = () => {
                 className="btn btn-success btn-sm"
                 onClick={() => setAddLocatingMethod((prev) => !prev)}
               >
-                + Add Locathing Method
+                + Add Locating Method
               </button>
-              {addBreakage && (
+
+              {addBreakageWithRepair && (
                 <div className="mt-3">
-                  <AddBreakage
+                  <AddBreakageWithRepair
                     onAdded={() => {
-                      setAddBreakage(false);
+                      setAddBreakageWithRepair(false);
                       refreshData("breakages");
+                      refreshData("repairs");
                     }}
                     testCaseVersion={selectedTestCaseVersion?.id}
                     appRelease={selectedRelease?.id}
-                    onCancel={() => setAddTestCaseVersion(false)}
+                    onCancel={() => setAddBreakageWithRepair(false)}
                   />
                 </div>
               )}
+
               {addBreakageReason && (
                 <div className="mt-3">
                   <AddBreakageReason
@@ -466,40 +471,6 @@ const DataProvider = () => {
                       setAddLocatingMethod(false);
                     }}
                     onCancel={() => setAddLocatingMethod(false)}
-                  />
-                </div>
-              )}
-            </>
-          )}
-
-          {showRepairAdd && (
-            <>
-              <div className="d-flex align-items-center mb-3">
-                <h4 className="mt-4">
-                  Repair for {selectedBreakage?.description}
-                </h4>
-              </div>
-              <AppDropdown
-                items={repairData}
-                dataType="repairs"
-                onSelect={handleRepairSelect}
-                selectedItem={selectedRepair}
-              />
-              <button
-                className="btn btn-success btn-sm"
-                onClick={() => setAddRepair((prev) => !prev)}
-              >
-                + Add Repair
-              </button>
-              {addRepair && (
-                <div className="mt-3">
-                  <AddRepair
-                    onAdded={() => {
-                      setAddRepair(false);
-                      refreshData("repairs");
-                    }}
-                    breakage={selectedBreakage?.id}
-                    onCancel={() => setAddRepair(false)}
                   />
                 </div>
               )}
