@@ -10,15 +10,17 @@ public class ApplicationDTO {
     private String url;
     private List<AppReleaseDTO> releases = new ArrayList<>();
     private List<TestSuiteDTO> testSuites = new ArrayList<>();
+    private List<LanguageDTO> languages = new ArrayList<>();
 
     public ApplicationDTO() {}
 
-    public ApplicationDTO(int id, String appName, String url, List<AppReleaseDTO> releases, List<TestSuiteDTO> testSuites) {
+    public ApplicationDTO(int id, String appName, String url, List<AppReleaseDTO> releases, List<TestSuiteDTO> testSuites, List<LanguageDTO> languages) {
         this.id = id;
         this.appName = appName;
         this.url = url;
         this.releases = releases;
         this.testSuites = testSuites;
+        this.languages = languages;
     }
 
     public int getId() {
@@ -59,5 +61,13 @@ public class ApplicationDTO {
 
     public void setTestSuites(List<TestSuiteDTO> testSuites) {
         this.testSuites = testSuites;
+    }
+
+    public List<LanguageDTO> getLanguages() {
+        return languages;
+    }
+
+    public void setLanguages(List<LanguageDTO> languages) {
+        this.languages = languages;
     }
 }

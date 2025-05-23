@@ -23,6 +23,14 @@ public class Application {
     @Column(name = "URL")
     private String url;
 
+    @ManyToMany
+    @JoinTable(
+            name = "APPLICATION_LANGUAGE",
+            joinColumns = @JoinColumn(name = "application_id"),
+            inverseJoinColumns = @JoinColumn(name = "language_id")
+    )
+    private List<Language> languages = new ArrayList<>();
+
     @OneToMany(mappedBy = "application", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<AppRelease> releases = new ArrayList<>();
 
@@ -70,5 +78,13 @@ public class Application {
 
     public void setTestSuites(List<TestSuite> testSuites) {
         this.testSuites = testSuites;
+    }
+
+    public List<Language> getLanguages() {
+        return languages;
+    }
+
+    public void setLanguages(List<Language> languages) {
+        this.languages = languages;
     }
 }

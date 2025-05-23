@@ -2,6 +2,7 @@ package com.WebApps.Benchmark.Mapper;
 
 import com.WebApps.Benchmark.DTO.AppReleaseDTO;
 import com.WebApps.Benchmark.DTO.ApplicationDTO;
+import com.WebApps.Benchmark.DTO.LanguageDTO;
 import com.WebApps.Benchmark.DTO.TestSuiteDTO;
 import com.WebApps.Benchmark.Model.Application;
 
@@ -26,12 +27,19 @@ public class ApplicationMapper {
                 .collect(Collectors.toList())
                 : new ArrayList<>();
 
+        List<LanguageDTO> languageDTOS = entity.getLanguages() != null
+                ? entity.getLanguages().stream()
+                .map(LanguageMapper::toDTO)
+                .collect(Collectors.toList())
+                : new ArrayList<>();
+
         return new ApplicationDTO(
                 entity.getId(),
                 entity.getAppName(),
                 entity.getUrl(),
                 appReleaseDTOs,
-                testSuiteDTOS
+                testSuiteDTOS,
+                languageDTOS
         );
     }
 

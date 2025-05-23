@@ -139,7 +139,7 @@ class BenchmarkApplicationTests {
 		BreakageDTO dto = new BreakageDTO();
 		dto.setAppReleaseId(1);
 		dto.setTestCaseVersionId(1);
-		dto.setTaxonomyDescription("test taxonomy");
+		dto.setDescription("test taxonomy");
 		dto.setBreakageReasonId(1);
 		dto.setLocatingMethodId(1);
 

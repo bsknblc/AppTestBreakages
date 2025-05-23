@@ -14,9 +14,11 @@ public class RepairService {
 
     private final RepairRepository repairRepository;
     private final BreakageRepository breakageRepository;
-    public RepairService(RepairRepository repairRepository, BreakageRepository breakageRepository) {
+    private final RepairExplanationRepository repairExplanationRepository;
+    public RepairService(RepairRepository repairRepository, BreakageRepository breakageRepository, RepairExplanationRepository repairExplanationRepository) {
         this.repairRepository = repairRepository;
         this.breakageRepository = breakageRepository;
+        this.repairExplanationRepository = repairExplanationRepository;
     }
 
     public List<RepairDTO> findAll(){
@@ -42,6 +44,9 @@ public class RepairService {
         Repair repair = new Repair();
         repair.setBreakage(breakageRepository.getReferenceById(repairDTO.getBreakageId()));
         repair.setCommitHash(repairDTO.getCommitHash());
+        repair.setRepairExplanations(repairDTO.getRepairExplanations().stream()
+                .map(dto -> repairExplanationRepository.getReferenceById(dto.getId()))
+                .collect(Collectors.toList()));
         repairRepository.save(repair);
 
         repairDTO.setId(repair.getId());

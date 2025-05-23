@@ -1,6 +1,7 @@
 package com.WebApps.Benchmark.Mapper;
 
 import com.WebApps.Benchmark.DTO.BreakageDTO;
+import com.WebApps.Benchmark.DTO.BreakageExplanationDTO;
 import com.WebApps.Benchmark.DTO.RepairDTO;
 import com.WebApps.Benchmark.Model.*;
 
@@ -19,6 +20,12 @@ public class BreakageMapper {
                 .collect(Collectors.toList())
                 : new ArrayList<>();
 
+        List<BreakageExplanationDTO> breakageExplanationDTOS = entity.getBreakageExplanations() != null
+                ? entity.getBreakageExplanations().stream()
+                .map(BreakageExplanationMapper::toDTO)
+                .collect(Collectors.toList())
+                : new ArrayList<>();
+
         return new BreakageDTO(
                 entity.getId(),
                 entity.getAppRelease() != null ? entity.getAppRelease().getId() : 0,
@@ -26,7 +33,9 @@ public class BreakageMapper {
                 entity.getBreakageReason() != null ? entity.getBreakageReason().getId() : 0,
                 entity.getLocatingMethod() != null ? entity.getLocatingMethod().getId() : 0,
                 repairDTOS,
-                entity.getTaxonomyDescription()
+                entity.getDescription(),
+                entity.getLine(),
+                breakageExplanationDTOS
         );
     }
 
