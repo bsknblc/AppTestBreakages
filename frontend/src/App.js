@@ -4,6 +4,7 @@ import AdminPanel from "./pages/AdminPanel";
 import AddApplicationPage from "./pages/AddApplicationPage";
 import "bootstrap/dist/css/bootstrap.min.css";
 import DataProvider from "./pages/DataProvider";
+import ShowCommit from "./pages/ShowCommit";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Route path="/admin" element={<AdminPanel />} />
         <Route path="/add-application" element={<AddApplicationPage />} />
         <Route path="/add-breakage" element={<DataProvider />} />
+        <Route path="/show-commit" element={<ShowCommit />} />
         <Route path="/" element={<AdminPanel />} />
       </Routes>
     </Router>

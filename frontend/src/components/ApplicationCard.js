@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../MyStyle.css";
 
 function ApplicationCard({ app }) {
   const [expanded, setExpanded] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <div className="card mb-3">
@@ -84,9 +86,25 @@ function ApplicationCard({ app }) {
                                                                       }
                                                                     >
                                                                       <small>
-                                                                        {
-                                                                          breakage.description
-                                                                        }
+                                                                        <button
+                                                                          onClick={() =>
+                                                                            navigate(
+                                                                              "/show-commit",
+                                                                              {
+                                                                                state:
+                                                                                  {
+                                                                                    breakageId:
+                                                                                      breakage.id,
+                                                                                  },
+                                                                              }
+                                                                            )
+                                                                          }
+                                                                          className="btn btn-link p-0 ms-1"
+                                                                        >
+                                                                          {
+                                                                            breakage.description
+                                                                          }
+                                                                        </button>
                                                                       </small>
                                                                     </li>
                                                                   )

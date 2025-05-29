@@ -6,6 +6,7 @@ import AppDropdown from "./AppDropdown";
 const AddTestSuite = ({ onAdded, application }) => {
   const [formData, setFormData] = useState({
     testSuiteName: "",
+    url: "",
     applicationId: application || null,
   });
   const [selectedApplication, setSelectedApplication] = useState(null);
@@ -74,7 +75,11 @@ const AddTestSuite = ({ onAdded, application }) => {
       }
 
       onAdded();
-      setFormData({ testSuiteName: "", applicationId: application || null });
+      setFormData({
+        testSuiteName: "",
+        url: "",
+        applicationId: application || null,
+      });
       if (application === null) {
         setSelectedApplication(null);
       }
@@ -131,6 +136,20 @@ const AddTestSuite = ({ onAdded, application }) => {
               id="testSuiteName"
               name="testSuiteName"
               value={formData.testSuiteName}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="mb-3">
+            <label htmlFor="url" className="form-label">
+              Test Suite URL
+            </label>
+            <input
+              type="url"
+              className="form-control"
+              id="url"
+              name="url"
+              value={formData.url}
               onChange={handleChange}
               required
             />
