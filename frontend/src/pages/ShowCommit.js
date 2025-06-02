@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./ShowCommit.css"; // We'll create this for styling
+import ShowBreakageInfo from "../components/ShowBreakageInfo";
 
 const ShowCommit = () => {
   const location = useLocation();
@@ -67,65 +68,68 @@ const ShowCommit = () => {
   }
 
   return (
-    <div className="commit-container">
-      <div className="commit-header">
-        <h2>Commit Details</h2>
-        <button
-          className="btn btn-outline-secondary"
-          onClick={() => navigate(-1)}
-        >
-          Back to Breakages
-        </button>
-      </div>
+    <>
+      <ShowBreakageInfo />
+      <div className="commit-container">
+        <div className="commit-header">
+          <h2>Commit Details</h2>
+          <button
+            className="btn btn-outline-secondary"
+            onClick={() => navigate(-1)}
+          >
+            Back to Breakages
+          </button>
+        </div>
 
-      <div className="commit-meta">
-        <div className="commit-hash">
-          <span className="meta-label">Commit Hash:</span>
-          <code>{commitData.sha}</code>
-        </div>
-        <div className="commit-author">
-          <span className="meta-label">Author:</span>
-          {commitData.commit.author.name}
-        </div>
-        <div className="commit-message">
-          <span className="meta-label">Message:</span>
-          {commitData.commit.message}
-        </div>
-      </div>
-
-      <div className="file-changes">
-        <h3>File Changes ({commitData.files.length})</h3>
-        {commitData.files.map((file, index) => (
-          <div key={index} className="file-change-card">
-            <div className="file-header">
-              <span className={`file-status ${file.status}`}>
-                {file.status.toUpperCase()}
-              </span>
-              <span className="file-name">{file.filename}</span>
-              <span className="file-stats">
-                <span className="additions">+{file.additions}</span>
-                <span className="deletions">-{file.deletions}</span>
-              </span>
-            </div>
-            {file.patch && (
-              <pre className="diff-container">
-                {file.patch.split("\n").map((line, i) => {
-                  let className = "";
-                  if (line.startsWith("+")) className = "added";
-                  else if (line.startsWith("-")) className = "deleted";
-                  else if (line.startsWith("@@")) className = "diff-info";
-                  return (
-                    <div key={i} className={`diff-line ${className}`}>
-                      {line}
-                    </div>
-                  );
-                })}
-              </pre>
-            )}
+        <div className="commit-meta">
+          <div className="commit-hash">
+            <span className="meta-label">Commit Hash:</span>
+            <code>{commitData.sha}</code>
           </div>
-        ))}
+          <div className="commit-author">
+            <span className="meta-label">Author:</span>
+            {commitData.commit.author.name}
+          </div>
+          <div className="commit-message">
+            <span className="meta-label">Message:</span>
+            {commitData.commit.message}
+          </div>
+        </div>
+
+        <div className="file-changes">
+          <h3>File Changes ({commitData.files.length})</h3>
+          {commitData.files.map((file, index) => (
+            <div key={index} className="file-change-card">
+              <div className="file-header">
+                <span className={`file-status ${file.status}`}>
+                  {file.status.toUpperCase()}
+                </span>
+                <span className="file-name">{file.filename}</span>
+                <span className="file-stats">
+                  <span className="additions">+{file.additions}</span>
+                  <span className="deletions">-{file.deletions}</span>
+                </span>
+              </div>
+              {file.patch && (
+                <pre className="diff-container">
+                  {file.patch.split("\n").map((line, i) => {
+                    let className = "";
+                    if (line.startsWith("+")) className = "added";
+                    else if (line.startsWith("-")) className = "deleted";
+                    else if (line.startsWith("@@")) className = "diff-info";
+                    return (
+                      <div key={i} className={`diff-line ${className}`}>
+                        {line}
+                      </div>
+                    );
+                  })}
+                </pre>
+              )}
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

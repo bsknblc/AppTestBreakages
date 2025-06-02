@@ -20,6 +20,10 @@ public class TestSuite {
     @Column(name = "NAME")
     private String testSuiteName;
 
+    @NotNull
+    @Column(name = "URL")
+    private String url;
+
     @ManyToOne
     @NotNull
     @JoinColumn(name = "application_id", nullable = false)
@@ -30,8 +34,9 @@ public class TestSuite {
 
     public TestSuite(){}
 
-    public TestSuite(String testSuiteName, Application application) {
+    public TestSuite(String testSuiteName, String url, Application application) {
         this.application = application;
+        this.url = url;
         this.testSuiteName = testSuiteName;
     }
 
@@ -45,6 +50,14 @@ public class TestSuite {
 
     public void setTestSuiteName(String testSuiteName) {
         this.testSuiteName = testSuiteName;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public List<TestCase> getTestCases() {

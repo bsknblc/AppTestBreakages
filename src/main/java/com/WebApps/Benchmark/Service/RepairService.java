@@ -3,6 +3,7 @@ package com.WebApps.Benchmark.Service;
 import com.WebApps.Benchmark.DTO.RepairDTO;
 import com.WebApps.Benchmark.Mapper.RepairMapper;
 import com.WebApps.Benchmark.Model.Repair;
+import com.WebApps.Benchmark.Model.RepairExplanation;
 import com.WebApps.Benchmark.Repository.*;
 import org.springframework.stereotype.Service;
 
@@ -51,6 +52,24 @@ public class RepairService {
 
         repairDTO.setId(repair.getId());
         return repairDTO;
+    }
+
+    public RepairDTO addRepairExplanation(int repairId, int explanationId) {
+        Repair repair = repairRepository.getReferenceById(repairId);
+        RepairExplanation explanation = repairExplanationRepository.getReferenceById(explanationId);
+        if (!repair.getRepairExplanations().contains(explanation)) {
+            repair.getRepairExplanations().add(explanation);
+            repairRepository.save(repair);
+        }
+        return RepairMapper.toDTO(repair);
+    }
+
+    public RepairDTO deleteRepairExplanation(int repairId, int explanationId) {
+        Repair repair = repairRepository.getReferenceById(repairId);
+        RepairExplanation explanation = repairExplanationRepository.getReferenceById(explanationId);
+        repair.getRepairExplanations().remove(explanation);
+        repairRepository.save(repair);
+        return RepairMapper.toDTO(repair);
     }
 
 }
