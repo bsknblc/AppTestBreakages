@@ -1,0 +1,125 @@
+.commit-container {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.commit-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.commit-meta {
+  background-color: #f8f9fa;
+  border-radius: 6px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.meta-label {
+  font-weight: 600;
+  color: #495057;
+  margin-right: 0.5rem;
+}
+
+.commit-hash, .commit-author, .commit-message {
+  margin-bottom: 0.5rem;
+}
+
+.file-changes {
+  margin-top: 2rem;
+}
+
+.file-change-card {
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+}
+
+.file-header {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.file-status {
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-right: 1rem;
+}
+
+.file-status.modified {
+  background-color: #fff3bf;
+  color: #5f3f00;
+}
+
+.file-status.added {
+  background-color: #d3f9d8;
+  color: #0b5320;
+}
+
+.file-status.removed {
+  background-color: #ffe3e3;
+  color: #860000;
+}
+
+.file-name {
+  flex-grow: 1;
+  font-family: monospace;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.file-stats {
+  margin-left: 1rem;
+}
+
+.additions {
+  color: #2b8a3e;
+  margin-right: 0.5rem;
+}
+
+.deletions {
+  color: #c92a2a;
+}
+
+.diff-container {
+  margin: 0;
+  padding: 0;
+  background-color: #f8f9fa;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  overflow-x: auto;
+}
+
+.diff-line {
+  padding: 0.1rem 1rem;
+  white-space: pre;
+}
+
+.diff-line.added {
+  background-color: #ebfbee;
+}
+
+.diff-line.deleted {
+  background-color: #fff5f5;
+}
+
+.diff-line.diff-info {
+  color: #5f3f00;
+  background-color: #fff9db;
+  font-weight: bold;
+}
+
+pre {
+  margin: 0;
+}

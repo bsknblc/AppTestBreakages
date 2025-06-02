@@ -1,8 +1,17 @@
 package com.WebApps.Benchmark.Service;
 
+import com.WebApps.Benchmark.Model.BreakageExplanation;
+import com.WebApps.Benchmark.Model.CommitChanges;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+
 import com.WebApps.Benchmark.DTO.BreakageDTO;
 import com.WebApps.Benchmark.Mapper.BreakageMapper;
 import com.WebApps.Benchmark.Model.Breakage;
+import com.WebApps.Benchmark.Model.Repair;
 import com.WebApps.Benchmark.Repository.*;
 import org.springframework.stereotype.Service;
 
@@ -77,6 +86,66 @@ public class BreakageService {
 
         breakageDTO.setId(breakage.getId());
         return breakageDTO;
+    }
+
+
+    public CommitChanges getCommitChanges(int breakageId) {
+        Breakage breakage = breakageRepository.getReferenceById(breakageId);
+        List<Repair> repairs = breakage.getRepairs();
+        String githubUsername = "bsknblc"; 
+        String githubToken = "token";
+
+        if (repairs.isEmpty()) {
+            return null;
+        }
+
+        // Just using the first repair for example
+        Repair repair = repairs.get(0);
+        String commitHash = repair.getCommitHash();
+        String repositoryURL = breakage.getTestCaseVersion().getTestCase().getTestSuite().getUrl();
+
+        // Extract owner and repo from URL
+        // Example: https://github.com/owner/repo -> owner/repo
+        String[] parts = repositoryURL.replace("https://github.com/", "").split("/");
+        String owner = parts[0];
+        String repo = parts[1];
+
+        String apiUrl = String.format("https://api.github.com/repos/%s/%s/commits/%s", owner, repo, commitHash);
+
+        // Create headers with authentication
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBasicAuth(githubUsername, githubToken);
+        headers.set("Accept", "application/vnd.github.v3+json");
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+        // Make the request
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<CommitChanges> response = restTemplate.exchange(
+                apiUrl,
+                HttpMethod.GET,
+                entity,
+                CommitChanges.class
+        );
+
+        return response.getBody();
+    }
+
+    public BreakageDTO addBreakageExplanation(int breakageId, int explanationId) {
+        Breakage breakage = breakageRepository.getReferenceById(breakageId);
+        BreakageExplanation breakageExplanation = breakageExplanationRepository.getReferenceById(explanationId);
+        if (!breakage.getBreakageExplanations().contains(breakageExplanation)) {
+            breakage.getBreakageExplanations().add(breakageExplanation);
+            breakageRepository.save(breakage);
+        }
+        return BreakageMapper.toDTO(breakage);
+    }
+
+    public BreakageDTO deleteBreakageExplanation(int breakageId, int explanationId) {
+        Breakage breakage = breakageRepository.getReferenceById(breakageId);
+        BreakageExplanation breakageExplanation = breakageExplanationRepository.getReferenceById(explanationId);
+        breakage.getBreakageExplanations().remove(breakageExplanation);
+        breakageRepository.save(breakage);
+        return BreakageMapper.toDTO(breakage);
     }
 
 }

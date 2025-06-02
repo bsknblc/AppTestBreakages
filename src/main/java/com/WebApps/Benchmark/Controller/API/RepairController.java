@@ -32,4 +32,18 @@ public class RepairController {
         return ResponseEntity.status(HttpStatus.CREATED).body(repairService.save(repairDTO));
     }
 
+    @PutMapping("/{repairId}/explanations/{explanationId}")
+    public ResponseEntity<RepairDTO> addExplanation(
+            @PathVariable int repairId,
+            @PathVariable int explanationId) {
+        return ResponseEntity.ok(repairService.addRepairExplanation(repairId, explanationId));
+    }
+
+    @DeleteMapping("/{repairId}/explanations/{explanationId}")
+    public ResponseEntity<RepairDTO> removeExplanation(
+            @PathVariable int repairId,
+            @PathVariable int explanationId) {
+        return ResponseEntity.ok(repairService.deleteRepairExplanation(repairId, explanationId));
+    }
+
 }

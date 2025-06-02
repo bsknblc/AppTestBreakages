@@ -42,6 +42,7 @@ public class TestSuiteService {
     public TestSuiteDTO save(TestSuiteDTO testSuiteDTO) {
         TestSuite testSuite = new TestSuite();
         testSuite.setTestSuiteName(testSuiteDTO.getTestSuiteName());
+        testSuite.setUrl(testSuiteDTO.getUrl());
         testSuite.setApplication(applicationRepository.getReferenceById(testSuiteDTO.getApplicationId()));
         testSuiteRepository.save(testSuite);
 
