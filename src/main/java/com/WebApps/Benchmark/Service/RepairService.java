@@ -1,5 +1,6 @@
 package com.WebApps.Benchmark.Service;
 
+import com.WebApps.Benchmark.DTO.ExplanationStats;
 import com.WebApps.Benchmark.DTO.RepairDTO;
 import com.WebApps.Benchmark.Mapper.RepairMapper;
 import com.WebApps.Benchmark.Model.Repair;
@@ -70,6 +71,17 @@ public class RepairService {
         repair.getRepairExplanations().remove(explanation);
         repairRepository.save(repair);
         return RepairMapper.toDTO(repair);
+    }
+
+        public List<RepairDTO> getRepairsByExplanations(List<String> explanations) {
+        List<Repair> repairs = repairRepository.findByRepairExplanationTexts(explanations);
+            return repairs.stream()
+                    .map(RepairMapper::toDTO)
+                    .collect(Collectors.toList());
+    }
+
+    public List<ExplanationStats> getRepairExplanationStats() {
+        return repairRepository.countRepairsGroupedByExplanation();
     }
 
 }

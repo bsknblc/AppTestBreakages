@@ -1,5 +1,6 @@
 package com.WebApps.Benchmark.Service;
 
+import com.WebApps.Benchmark.DTO.ExplanationStats;
 import com.WebApps.Benchmark.Model.BreakageExplanation;
 import com.WebApps.Benchmark.Model.CommitChanges;
 import org.springframework.web.client.RestTemplate;
@@ -92,7 +93,7 @@ public class BreakageService {
     public CommitChanges getCommitChanges(int breakageId) {
         Breakage breakage = breakageRepository.getReferenceById(breakageId);
         List<Repair> repairs = breakage.getRepairs();
-        String githubUsername = "bsknblc"; 
+        String githubUsername = "bsknblc";
         String githubToken = "token";
 
         if (repairs.isEmpty()) {
@@ -146,6 +147,17 @@ public class BreakageService {
         breakage.getBreakageExplanations().remove(breakageExplanation);
         breakageRepository.save(breakage);
         return BreakageMapper.toDTO(breakage);
+    }
+
+    public List<BreakageDTO> getBreakagesByExplanations(List<String> explanations) {
+        List<Breakage> breakages = breakageRepository.findByBreakageExplanationTexts(explanations);
+        return breakages.stream()
+                .map(BreakageMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<ExplanationStats> getBreakageExplanationStats() {
+        return breakageRepository.countBreakagesGroupedByExplanation();
     }
 
 }

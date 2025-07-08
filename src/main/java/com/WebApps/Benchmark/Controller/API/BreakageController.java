@@ -1,5 +1,6 @@
 package com.WebApps.Benchmark.Controller.API;
 
+import com.WebApps.Benchmark.DTO.ExplanationStats;
 import com.WebApps.Benchmark.Model.CommitChanges;
 import com.WebApps.Benchmark.DTO.BreakageDTO;
 import com.WebApps.Benchmark.DTO.RepairDTO;
@@ -59,6 +60,16 @@ public class BreakageController {
             @PathVariable int breakageId,
             @PathVariable int explanationId) {
         return ResponseEntity.ok(breakageService.deleteBreakageExplanation(breakageId, explanationId));
+    }
+
+    @GetMapping("/search-by-explanations")
+    public ResponseEntity<List<BreakageDTO>> getBreakagesByExplanations(@RequestParam List<String> explanations) {
+        return ResponseEntity.ok(breakageService.getBreakagesByExplanations(explanations));
+    }
+
+    @GetMapping("/explanation-stats")
+    public ResponseEntity<List<ExplanationStats>> getBreakageExplanationStats() {
+        return ResponseEntity.ok(breakageService.getBreakageExplanationStats());
     }
 
 }
