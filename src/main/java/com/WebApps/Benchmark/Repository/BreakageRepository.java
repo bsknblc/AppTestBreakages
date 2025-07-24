@@ -24,10 +24,11 @@ public interface BreakageRepository extends JpaRepository<Breakage, Integer> {
     @Query("SELECT b FROM Breakage b JOIN b.breakageExplanations be WHERE be.explanation IN :explanations")
     List<Breakage> findByBreakageExplanationTexts(@Param("explanations") List<String> explanations);
 
-    @Query("SELECT be.id AS id, be.explanation AS explanation, COUNT(b.id) AS count " +
+    @Query("SELECT be.id AS id, be.explanation AS explanation, ct.causeType AS causeType, COUNT(b.id) AS count " +
             "FROM Breakage b " +
             "JOIN b.breakageExplanations be " +
-            "GROUP BY be.id, be.explanation")
+            "JOIN be.type ct " +
+            "GROUP BY be.id, be.explanation, ct.causeType")
     List<ExplanationStats> countBreakagesGroupedByExplanation();
 
 }

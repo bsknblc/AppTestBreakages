@@ -73,8 +73,8 @@ const AdminPanel = () => {
         </button>
       </div>
 
-      <ExplanationSearch onSearchResults={handleSearchResults} />
       <ExplanationVisualization onFilter={handleSearchResults} />
+      <ExplanationSearch onSearchResults={handleSearchResults} />
 
       <div className="card">
         <div className="card-header bg-success text-white">

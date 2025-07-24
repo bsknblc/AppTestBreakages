@@ -11,7 +11,8 @@ public class BreakageExplanationMapper {
 
         return new BreakageExplanationDTO(
                 entity.getId(),
-                entity.getExplanation()
+                entity.getExplanation(),
+                entity.getType() != null ? entity.getType().getId() : 0
         );
     }
 

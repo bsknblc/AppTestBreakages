@@ -4,12 +4,14 @@ public class BreakageExplanationDTO {
 
     private int id;
     private String explanation;
+    private int typeId;
 
     public BreakageExplanationDTO() {}
 
-    public BreakageExplanationDTO(int id, String explanation) {
+    public BreakageExplanationDTO(int id, String explanation, int typeId) {
         this.id = id;
         this.explanation = explanation;
+        this.typeId = typeId;
     }
 
     public int getId() {
@@ -26,5 +28,13 @@ public class BreakageExplanationDTO {
 
     public void setExplanation(String explanation) {
         this.explanation = explanation;
+    }
+
+    public int getTypeId() {
+        return typeId;
+    }
+
+    public void setTypeId(int typeId) {
+        this.typeId = typeId;
     }
 }
