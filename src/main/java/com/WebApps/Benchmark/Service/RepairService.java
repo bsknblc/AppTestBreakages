@@ -84,6 +84,10 @@ public class RepairService {
         return repairRepository.countRepairsGroupedByExplanation();
     }
 
+    public List<ExplanationStats> getRepairExplanationStatsWithoutValidation() {
+        return repairRepository.countRepairsGroupedByExplanationWithoutValidation();
+    }
+
 }
 
 

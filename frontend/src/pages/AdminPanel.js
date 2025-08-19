@@ -27,6 +27,9 @@ const AdminPanel = () => {
       } finally {
         setLoading(false);
       }
+
+      console.log("AdminPanel mounted");
+      return () => console.log("AdminPanel unmounted");
     };
 
     fetchApplications();

@@ -52,9 +52,14 @@ public class RepairController {
         return ResponseEntity.ok(repairService.getRepairsByExplanations(explanations));
     }
 
-    @GetMapping("/explanation-stats")
+    @GetMapping("/explanation-stats-validation")
     public ResponseEntity<List<ExplanationStats>> getRepairExplanationStats() {
         return ResponseEntity.ok(repairService.getRepairExplanationStats());
+    }
+
+    @GetMapping("/explanation-stats")
+    public ResponseEntity<List<ExplanationStats>> getRepairExplanationStatsWithoutValidation() {
+        return ResponseEntity.ok(repairService.getRepairExplanationStatsWithoutValidation());
     }
 
 }

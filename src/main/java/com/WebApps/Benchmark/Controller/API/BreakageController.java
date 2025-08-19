@@ -67,9 +67,14 @@ public class BreakageController {
         return ResponseEntity.ok(breakageService.getBreakagesByExplanations(explanations));
     }
 
-    @GetMapping("/explanation-stats")
+    @GetMapping("/explanation-stats-validation")
     public ResponseEntity<List<ExplanationStats>> getBreakageExplanationStats() {
         return ResponseEntity.ok(breakageService.getBreakageExplanationStats());
+    }
+
+    @GetMapping("/explanation-stats")
+    public ResponseEntity<List<ExplanationStats>> getBreakageExplanationStatsWithoutValidation() {
+        return ResponseEntity.ok(breakageService.getBreakageExplanationStatsWithoutValidation());
     }
 
 }

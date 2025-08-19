@@ -81,7 +81,7 @@ const ExplanationVisualization = ({ onFilter }) => {
       tooltip: {
         callbacks: {
           label: (context) => `${context.parsed.y} occurrences`,
-          afterLabel: () => "Click to filter by this explanation",
+          afterLabel: () => "", //afterLabel: () => "Click to filter by this explanation",
         },
       },
       title: {

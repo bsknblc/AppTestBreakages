@@ -160,4 +160,8 @@ public class BreakageService {
         return breakageRepository.countBreakagesGroupedByExplanation();
     }
 
+    public List<ExplanationStats> getBreakageExplanationStatsWithoutValidation() {
+        return breakageRepository.countBreakagesGroupedByExplanationWithoutValidation();
+    }
+
 }
