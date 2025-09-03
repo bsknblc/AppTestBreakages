@@ -1,5 +1,6 @@
 package com.WebApps.Benchmark.Controller.API;
 
+import com.WebApps.Benchmark.DTO.ExplanationStats;
 import com.WebApps.Benchmark.DTO.RepairDTO;
 import com.WebApps.Benchmark.Service.RepairService;
 import org.springframework.http.HttpStatus;
@@ -44,6 +45,21 @@ public class RepairController {
             @PathVariable int repairId,
             @PathVariable int explanationId) {
         return ResponseEntity.ok(repairService.deleteRepairExplanation(repairId, explanationId));
+    }
+
+    @GetMapping("/search-by-explanations")
+    public ResponseEntity<List<RepairDTO>> getRepairsByExplanations(@RequestParam List<String> explanations) {
+        return ResponseEntity.ok(repairService.getRepairsByExplanations(explanations));
+    }
+
+    @GetMapping("/explanation-stats-validation")
+    public ResponseEntity<List<ExplanationStats>> getRepairExplanationStats() {
+        return ResponseEntity.ok(repairService.getRepairExplanationStats());
+    }
+
+    @GetMapping("/explanation-stats")
+    public ResponseEntity<List<ExplanationStats>> getRepairExplanationStatsWithoutValidation() {
+        return ResponseEntity.ok(repairService.getRepairExplanationStatsWithoutValidation());
     }
 
 }

@@ -149,3 +149,244 @@ button[type="submit"]:disabled {
     color: red;
     margin-bottom: 1rem;
 }
+
+/* Modal styles */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1050;
+}
+
+.modal-content {
+  background-color: white;
+  border-radius: 5px;
+  width: 80%;
+  max-width: 800px;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+}
+
+.modal-header {
+  padding: 15px;
+  border-bottom: 1px solid #e5e5e5;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-body {
+  padding: 15px;
+}
+
+.modal-footer {
+  padding: 15px;
+  border-top: 1px solid #e5e5e5;
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* Commit details styles */
+.commit-container {
+  padding: 15px;
+}
+
+.commit-meta {
+  margin-bottom: 20px;
+}
+
+.commit-meta div {
+  margin-bottom: 8px;
+}
+
+.meta-label {
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.file-changes {
+  margin-top: 20px;
+}
+
+.file-change-card {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  overflow: hidden;
+}
+
+.file-header {
+  padding: 8px 15px;
+  background-color: #f8f9fa;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.file-status {
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 0.8em;
+  font-weight: bold;
+}
+
+.file-status.added {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.file-status.modified {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.file-status.removed {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.file-name {
+  flex-grow: 1;
+  font-family: monospace;
+}
+
+.file-stats {
+  font-size: 0.9em;
+}
+
+.additions {
+  color: #28a745;
+  margin-right: 5px;
+}
+
+.deletions {
+  color: #dc3545;
+}
+
+.diff-container {
+  background-color: #f8f9fa;
+  padding: 10px;
+  margin: 0;
+  overflow-x: auto;
+  font-family: monospace;
+  font-size: 0.9em;
+  white-space: pre;
+}
+
+.diff-line {
+  line-height: 1.5;
+}
+
+.diff-line.added {
+  background-color: #e6ffed;
+}
+
+.diff-line.deleted {
+  background-color: #ffebe9;
+}
+
+.diff-line.diff-info {
+  color: #6a737d;
+  font-style: italic;
+}
+
+.modal-body {
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.breakage-section {
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #eee;
+}
+
+.info-item {
+  margin-bottom: 10px;
+}
+
+.info-label {
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.commit-container {
+  background-color: #f8f9fa;
+  padding: 15px;
+  border-radius: 5px;
+}
+
+.explanation-tag {
+  display: inline-block;
+  padding: 0.25em 0.4em;
+  font-size: 75%;
+  font-weight: 700;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: 0.25rem;
+  margin-right: 0.3rem;
+  margin-bottom: 0.3rem;
+}
+
+.breakage-explanation-tag {
+  color: #fff;
+  background-color: #dc3545;
+}
+
+.repair-explanation-tag {
+  color: #fff;
+  background-color: #28a745;
+}
+
+.highlighted-breakage {
+  background-color: rgba(220, 53, 69, 0.1);
+  border-left: 3px solid #dc3545;
+  padding-left: 5px;
+}
+
+.chart-container {
+  cursor: pointer;
+}
+
+.chart-container:hover {
+  opacity: 0.9;
+}
+
+/* Chart container styles */
+.chart-container-lg {
+  width: 100%;
+  min-height: 500px;
+  position: relative;
+}
+
+/* Tab buttons */
+.btn-group .btn {
+  transition: all 0.3s ease;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .chart-container-lg {
+    height: 400px;
+    min-height: 400px;
+  }
+}
+
+/* Chart tooltip styling */
+.chartjs-tooltip {
+  background: rgba(0, 0, 0, 0.8) !important;
+  border-radius: 4px !important;
+  padding: 10px !important;
+  color: white !important;
+  font-size: 14px !important;
+}

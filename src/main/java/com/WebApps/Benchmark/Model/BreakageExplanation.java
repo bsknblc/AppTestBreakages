@@ -23,6 +23,11 @@ public class BreakageExplanation {
     @NotNull
     private String explanation;
 
+    @ManyToOne
+    @JoinColumn(name = "type_id", nullable = false)
+    @NotNull
+    private CauseType type;
+
     public BreakageExplanation() {}
 
     public BreakageExplanation(List<Breakage> breakages, String explanation) {
@@ -48,5 +53,13 @@ public class BreakageExplanation {
 
     public void setExplanation(String explanation) {
         this.explanation = explanation;
+    }
+
+    public CauseType getType() {
+        return type;
+    }
+
+    public void setType(CauseType type) {
+        this.type = type;
     }
 }

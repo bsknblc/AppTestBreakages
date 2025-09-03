@@ -3,12 +3,15 @@ import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../MyStyle.css";
 import ApplicationCard from "../components/ApplicationCard";
+import ExplanationSearch from "../components/ExplanationSearch";
+import ExplanationVisualization from "../components/ExplanationVisualization";
 
 const AdminPanel = () => {
   const [applications, setApplications] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const [filteredBreakageIds, setFilteredBreakageIds] = useState(null);
 
   useEffect(() => {
     const fetchApplications = async () => {
@@ -24,6 +27,9 @@ const AdminPanel = () => {
       } finally {
         setLoading(false);
       }
+
+      console.log("AdminPanel mounted");
+      return () => console.log("AdminPanel unmounted");
     };
 
     fetchApplications();
@@ -48,16 +54,20 @@ const AdminPanel = () => {
       </div>
     );
 
+  const handleSearchResults = (breakageIds) => {
+    setFilteredBreakageIds(breakageIds);
+  };
+
   return (
     <div className="container-fluid mt-4">
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h1>Application Management</h1>
-        <button
+        {/* <button
           onClick={() => navigate("/add-application")}
           className="btn btn-primary"
         >
           Add New Application
-        </button>
+        </button> */}
         <button
           onClick={() => navigate("/add-breakage")}
           className="btn btn-primary"
@@ -65,6 +75,9 @@ const AdminPanel = () => {
           Add Breakage
         </button>
       </div>
+
+      <ExplanationVisualization onFilter={handleSearchResults} />
+      <ExplanationSearch onSearchResults={handleSearchResults} />
 
       <div className="card">
         <div className="card-header bg-success text-white">
@@ -84,7 +97,11 @@ const AdminPanel = () => {
           ) : (
             <div className="applications-list">
               {applications.map((app) => (
-                <ApplicationCard key={app.id} app={app} />
+                <ApplicationCard
+                  key={app.id}
+                  app={app}
+                  filteredBreakageIds={filteredBreakageIds}
+                />
               ))}
             </div>
           )}

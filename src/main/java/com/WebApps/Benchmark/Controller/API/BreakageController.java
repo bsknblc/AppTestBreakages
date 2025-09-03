@@ -1,5 +1,6 @@
 package com.WebApps.Benchmark.Controller.API;
 
+import com.WebApps.Benchmark.DTO.ExplanationStats;
 import com.WebApps.Benchmark.Model.CommitChanges;
 import com.WebApps.Benchmark.DTO.BreakageDTO;
 import com.WebApps.Benchmark.DTO.RepairDTO;
@@ -59,6 +60,36 @@ public class BreakageController {
             @PathVariable int breakageId,
             @PathVariable int explanationId) {
         return ResponseEntity.ok(breakageService.deleteBreakageExplanation(breakageId, explanationId));
+    }
+
+    @GetMapping("/search-by-explanations")
+    public ResponseEntity<List<BreakageDTO>> getBreakagesByExplanations(@RequestParam List<String> explanations) {
+        return ResponseEntity.ok(breakageService.getBreakagesByExplanations(explanations));
+    }
+
+    @GetMapping("/explanation-stats-validation")
+    public ResponseEntity<List<ExplanationStats>> getBreakageExplanationStats() {
+        return ResponseEntity.ok(breakageService.getBreakageExplanationStats());
+    }
+
+    @GetMapping("/explanation-stats")
+    public ResponseEntity<List<ExplanationStats>> getBreakageExplanationStatsWithoutValidation() {
+        return ResponseEntity.ok(breakageService.getBreakageExplanationStatsWithoutValidation());
+    }
+
+    @GetMapping("/count-breakages-by-app")
+    public ResponseEntity<List<Object[]>> countBreakagesByAppAndExplanation(){
+        return ResponseEntity.ok(breakageService.countBreakagesByAppAndExplanation());
+    }
+
+    @GetMapping("/count-reasons")
+    public ResponseEntity<List<Object[]>> countBreakagesByReason(){
+        return ResponseEntity.ok(breakageService.countBreakagesByReason());
+    }
+
+    @GetMapping("/count-locating-methods")
+    public ResponseEntity<List<Object[]>> countBreakagesByLocatingMethod(){
+        return ResponseEntity.ok(breakageService.countBreakagesByLocatingMethod());
     }
 
 }
