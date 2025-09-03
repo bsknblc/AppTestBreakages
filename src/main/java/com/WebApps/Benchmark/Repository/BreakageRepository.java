@@ -41,4 +41,36 @@ public interface BreakageRepository extends JpaRepository<Breakage, Integer> {
             "GROUP BY be.id, be.explanation, ct.causeType")
     List<ExplanationStats> countBreakagesGroupedByExplanationWithoutValidation();
 
+    @Query("""
+        SELECT be.explanation, a.appName, COUNT(b)
+        FROM BreakageExplanation be
+        JOIN be.breakages b
+        JOIN b.appRelease ar
+        JOIN ar.application a
+        GROUP BY be.explanation, a.appName
+    """)
+    List<Object[]> countBreakagesByAppAndExplanation();
+
+    @Query("""
+        SELECT br.reasonName, COUNT(b)
+        FROM Breakage b
+        JOIN b.breakageReason br
+        JOIN b.appRelease ar
+        JOIN ar.application a
+        WHERE a.id IN (1, 3, 4, 5, 6, 8)
+        GROUP BY br.reasonName
+    """)
+    List<Object[]> countBreakagesByReasonExcludingApps();
+
+    @Query("""
+        SELECT lm.locatingMethodName, COUNT(b)
+        FROM Breakage b
+        JOIN b.locatingMethod lm
+        JOIN b.appRelease ar
+        JOIN ar.application a
+        WHERE a.id IN (1,3,4,5,6,8)
+        GROUP BY lm.locatingMethodName
+    """)
+    List<Object[]> countBreakagesByLocatingMethodExcludingApps();
+
 }

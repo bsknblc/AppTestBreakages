@@ -22,6 +22,10 @@ public interface RepairRepository extends JpaRepository<Repair, Integer> {
     @Query("SELECT re.id AS id, re.explanation AS explanation, COUNT(r.id) AS count " +
             "FROM Repair r " +
             "JOIN r.repairExplanations re " +
+            "JOIN r.breakage b " +
+            "JOIN b.appRelease ar " +
+            "JOIN ar.application app " +
+            "WHERE app.id IN (1, 3, 4, 5, 6, 8) " +
             "GROUP BY re.id, re.explanation")
     List<ExplanationStats> countRepairsGroupedByExplanation();
 

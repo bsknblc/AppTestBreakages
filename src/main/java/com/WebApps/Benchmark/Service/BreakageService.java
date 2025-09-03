@@ -164,4 +164,16 @@ public class BreakageService {
         return breakageRepository.countBreakagesGroupedByExplanationWithoutValidation();
     }
 
+    public List<Object[]> countBreakagesByAppAndExplanation(){
+        return breakageRepository.countBreakagesByAppAndExplanation();
+    }
+
+    public List<Object[]> countBreakagesByReason(){
+        return breakageRepository.countBreakagesByReasonExcludingApps();
+    }
+
+    public List<Object[]> countBreakagesByLocatingMethod(){
+        return breakageRepository.countBreakagesByLocatingMethodExcludingApps();
+    }
+
 }

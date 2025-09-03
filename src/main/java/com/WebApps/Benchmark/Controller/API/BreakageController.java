@@ -77,4 +77,19 @@ public class BreakageController {
         return ResponseEntity.ok(breakageService.getBreakageExplanationStatsWithoutValidation());
     }
 
+    @GetMapping("/count-breakages-by-app")
+    public ResponseEntity<List<Object[]>> countBreakagesByAppAndExplanation(){
+        return ResponseEntity.ok(breakageService.countBreakagesByAppAndExplanation());
+    }
+
+    @GetMapping("/count-reasons")
+    public ResponseEntity<List<Object[]>> countBreakagesByReason(){
+        return ResponseEntity.ok(breakageService.countBreakagesByReason());
+    }
+
+    @GetMapping("/count-locating-methods")
+    public ResponseEntity<List<Object[]>> countBreakagesByLocatingMethod(){
+        return ResponseEntity.ok(breakageService.countBreakagesByLocatingMethod());
+    }
+
 }
